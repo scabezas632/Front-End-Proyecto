@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { HorarioComponent } from './components/horario/horario.component';
 import { DisponibilidadComponent } from './components/disponibilidad/disponibilidad.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
+import { SalasComponent } from './components/salas/salas.component';
+import { ProfesoresComponent } from './components/profesores/profesores.component';
 
 //SERVICIOS
 
@@ -18,7 +20,9 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
     AppComponent,
     HorarioComponent,
     DisponibilidadComponent,
-    NavbarComponent
+    NavbarComponent,
+    SalasComponent,
+    ProfesoresComponent
   ],
   imports: [
     BrowserModule,

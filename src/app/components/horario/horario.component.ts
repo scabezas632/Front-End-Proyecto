@@ -7,7 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HorarioComponent implements OnInit {
 
-  public clicked:boolean = true;
   public periodos:any[]=[0,1,2,3,4,5,6,7,8];
   public matrizHorario: any[] = [[false, false, false, false, false, false],
                 							   [false, false, false, false, false, false],
@@ -29,7 +28,7 @@ export class HorarioComponent implements OnInit {
     let fila = +dato[0];
     let columna = +dato[1];
 
-    console.log("bloques["+columna+"]["+fila+"]: "+this.matrizHorario[columna][fila]);
+    // console.log("bloques["+columna+"]["+fila+"]: "+this.matrizHorario[columna][fila]);
 
     return this.matrizHorario[columna][fila];
   }
@@ -39,16 +38,10 @@ export class HorarioComponent implements OnInit {
     let fila = +dato[0];
     let columna = +dato[1];
 
-    this.matrizHorario[columna][fila]=!this.matrizHorario[columna][fila];
-  }
-
-  changeColor(){
-    if (this.clicked){
-      this.clicked = false;
-    } else {
-      this.clicked = true;
+    if(fila==5 && columna>=4){
+      this.matrizHorario[columna][fila]=this.matrizHorario[columna][fila];
+    }else{
+      this.matrizHorario[columna][fila]=!this.matrizHorario[columna][fila];
     }
   }
-
-
 }
