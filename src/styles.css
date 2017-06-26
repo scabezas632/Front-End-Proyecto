@@ -4,7 +4,11 @@
 }
 
 .margin-30-bottom{
-  margin-bottom: 30px;
+  margin-bottom: 15px;
+}
+
+.w-120{
+  width: 120px;
 }
 
 .btn-margin{
@@ -50,6 +54,9 @@
 .fadeIn {
   animation-name: fadeIn;
 }
+
+
+/* Search Tablas */
 
 
 /* NAVBAR */

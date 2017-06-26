@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sala</title>
+  </head>
+  <body>
+    <h3 class="margin-30">Sala: <small>{{ sala.nombre }}</small></h3>
+    <button [routerLink]="'/salas'"
+            class="btn btn-outline-danger">
+      Regresar
+    </button>
+    <button  (click)="agregarNuevo(forma)"
+            type="button"
+            class="btn btn-outline-success">
+      Nueva Sala
+    </button>
+    <hr>
+
+    <div class="row animated fadeIn fast">
+      <div class="col-md-12">
+
+        <form (ngSubmit)="guardar()" #forma="ngForm">
+
+          <div class="form-group">
+            <label>Nombre</label>
+            <input [(ngModel)]="sala.nombre"
+                    name="nombre"
+                    type="text"
+                    class="form-control"
+                    placeholder="Nombre de la Sala"
+                    required>
+          </div>
+
+          <div class="form-group">
+            <button [disabled]="!forma.valid"
+                    type="submit"
+                    class="btn btn-outline-primary">
+              Guardar
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </body>
+</html>

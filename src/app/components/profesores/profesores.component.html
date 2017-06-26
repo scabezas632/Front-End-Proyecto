@@ -1,49 +1,72 @@
-<!-- Tabla de horarios -->
-<div class="card text-center animated fadeIn margin-30-bottom">
-  <h3 class="card-header">Horario de *NOMBRE*</h3>
-  <div class="card-block">
-    <div class="form-group pull-right">
-        <input type="text" class="search form-control" placeholder="What you looking for?">
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CRUD Profesores</title>
+  </head>
+  <body>
+    <h1 class="margin-30">CRUD Profesores</h1>
+    <hr>
+
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <button [routerLink]="['/profesor','nuevo']"
+                class="btn btn-outline-primary margin-30-bottom"
+                type="button" name="button">
+          Nuevo Profesor
+        </button>
+      </div>
+      <br>
+
     </div>
-    <span class="counter pull-right"></span>
-    <table class="table table-hover table-bordered results">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th class="col-md-5 col-xs-5">Name / Surname</th>
-          <th class="col-md-4 col-xs-4">Job</th>
-          <th class="col-md-3 col-xs-3">City</th>
-        </tr>
-        <tr class="warning no-result">
-          <td colspan="4"><i class="fa fa-warning"></i> No se encontraron resultados</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Vatanay Özbeyli</td>
-          <td>UI & UX</td>
-          <td>Istanbul</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Burak Özkan</td>
-          <td>Software Developer</td>
-          <td>Istanbul</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Egemen Özbeyli</td>
-          <td>Purchasing</td>
-          <td>Kocaeli</td>
-        </tr>
-        <tr>
-          <th scope="row">4</th>
-          <td>Engin Kızıl</td>
-          <td>Sales</td>
-          <td>Bozuyük</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+
+    <div class="row animated fadeIn fast">
+      <div class="col-md-12">
+
+        <div class="table-responsive">
+
+          <table class="table">
+            <thead class="thead-inverse">
+              <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Rut</th>
+                <th class="text-right">Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let k of profesores | keys; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ profesores[k].nombre + " " + profesores[k].apellido }}</td>
+                <td>{{ profesores[k].rut }}</td>
+                <td class="text-right w-120">
+                  <button [routerLink]="['/profesor', k]"
+                          type="button" class="btn btn-outline-success">
+                    Editar
+                  </button>
+                  <button (click)="borrarProfesor(k)"
+                          type="button" class="btn btn-outline-danger">
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div *ngIf="( profesores | keys ).length === 0 && !loading"
+                class="alert alert-info" role="alert">
+            <strong>No hay</strong> registros que mostrar
+          </div>
+
+          <div *ngIf="loading"
+                class="alert alert-warning" role="alert">
+            <strong>Cargando...</strong> por favor espere
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </body>
+</html>
