@@ -37,20 +37,20 @@
             </thead>
             <tbody>
               <tr *ngFor="let k of profesores | keys; let i = index">
-                <td class="text-center">{{ profesores[k].id }}</td>
+                <td class="text-center">{{ i+1 }}</td>
                 <td class="text-center">{{ profesores[k].name + " " + profesores[k].apellido }}</td>
                 <td class="text-center">{{ profesores[k].rut }}</td>
                 <td class="text-center">{{ profesores[k].username }}</td>
                 <td class="text-center">
-                  <button [routerLink]="['/profesor', k]"
+                  <!-- <button [routerLink]="['/profesor', profesores[k].id]"
                           type="button" class="btn btn-outline-info">
                     Ver
-                  </button>
-                  <button [routerLink]="['/profesor', k]"
+                  </button> -->
+                  <button [routerLink]="['/profesor', profesores[k].id]"
                           type="button" class="btn btn-outline-primary">
                     Editar
                   </button>
-                  <button (click)="borrarProfesor(1)"
+                  <button (click)="borrarProfesor(profesores[k].id)"
                           type="button" class="btn btn-outline-danger">
                     Eliminar
                   </button>

@@ -14,15 +14,16 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 
 //Profesores
 import { ProfesoresComponent } from './components/profesores/profesores.component';
+import { ProfesorComponent } from './components/profesores/profesor.component';
 
 //Salas
 import { SalasComponent } from './components/salas/salas.component';
-import { ProfesorComponent } from './components/profesores/profesor.component';
 import { SalaComponent } from './components/salas/sala.component';
 
 //SERVICIOS
 import { ProfesoresService } from './services/profesores.service';
 import { SalasService } from './services/salas.service';
+import { DepartamentosService } from './services/departamentos.service';
 
 //PIPES
 import { KeysPipe } from './pipes/keys.pipe';
@@ -47,7 +48,8 @@ import { KeysPipe } from './pipes/keys.pipe';
   ],
   providers: [
     ProfesoresService,
-    SalasService
+    SalasService,
+    DepartamentosService
   ],
   bootstrap: [AppComponent]
 })

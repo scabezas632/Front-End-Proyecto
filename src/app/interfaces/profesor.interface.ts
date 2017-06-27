@@ -1,10 +1,13 @@
 
 export interface Profesor{
-  nombre:string;
+  name:string;
   apellido:string;
   rut:number;
   email:string;
-  username:string;
-  password:string;
+  // departamento:string;
+  // jerarquia:string;
+  // contrato:string;
+  // username:string;
+  // password:string;
   key$?:string;
 }

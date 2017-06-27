@@ -5,7 +5,7 @@
     <title>Profesor</title>
   </head>
   <body>
-    <h3 class="margin-30">Profesor: <small>{{ profesor.nombre + " " + profesor.apellido }}</small></h3>
+    <h3 class="margin-30">Profesor: <small>{{ profesor.name + " " + profesor.apellido }}</small></h3>
     <button [routerLink]="'/profesores'"
             class="btn btn-outline-danger">
       Regresar
@@ -22,6 +22,7 @@
 
         <form [formGroup]="formas" (ngSubmit)="guardar(forma)" #forma="ngForm">
           <div>
+            <!-- Inicio container Información profesor -->
             <div class="card card-info-margin">
               <h3 class="card-header">
                 Información del profesor
@@ -30,7 +31,7 @@
                 <div class="form-group row" [ngClass]="{ 'has-danger': (!formas.get('nombre').valid) && formas.get('nombre').touched }">
                     <label class="col-2 col-form-label">Nombre</label>
                     <div class="col-8">
-                    <input [(ngModel)]="profesor.nombre"
+                    <input [(ngModel)]="profesor.name"
                             name="nombre"
                             type="text"
                             class="form-control"
@@ -110,10 +111,56 @@
 
                   </div>
                 </div>
+
+                <div class="form-group row" [ngClass]="{ 'has-danger': (!formas.get('departamento').valid) && formas.get('departamento').touched }">
+                  <label class="col-2 col-form-label">Departamento</label>
+                  <div class="col-8">
+                    <select [(ngModel)]="profesor.departamento"
+                            class="form-control"
+                            name="departamento"
+                            formControlName="departamento">
+                      <option value="" selected disabled>Seleccione un departamento</option>
+                      <option *ngFor="let k of departamentos | keys;"
+                              [value]="departamentos[k].id">{{ departamentos[k].edificio }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row" [ngClass]="{ 'has-danger': (!formas.get('departamento').valid) && formas.get('departamento').touched }">
+                  <label class="col-2 col-form-label">Contrato</label>
+                  <div class="col-8">
+
+                    <label class="custom-control custom-radio">
+                      <input [(ngModel)]="profesor.contrato"
+                              type="radio"
+                              name="contrato"
+                              value="A contrata"
+                              formControlName="contrato"
+                              class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">A contrata</span>
+                    </label>
+                    <label class="custom-control custom-radio">
+                      <input [(ngModel)]="profesor.contrato"
+                              type="radio"
+                              name="contrato"
+                              value="Honorario"
+                              formControlName="contrato"
+                              class="custom-control-input">
+                      <span class="custom-control-indicator"></span>
+                      <span class="custom-control-description">Honorario</span>
+                    </label>
+
+                  </div>
+                </div>
+
               </div>
             </div>
+            <!-- Fin container Información Profe -->
 
-            <div class="card card-info-margin">
+
+            <!-- Comienzo container Profe Usuario -->
+            <!-- <div class="card card-info-margin">
               <h3 class="card-header">
                 Usuario del profesor
               </h3>
@@ -183,7 +230,9 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
+            <!-- Fin container Profe Usuario -->
+
 
             <!-- Tabla de horarios -->
             <div class="form-group">
@@ -231,6 +280,10 @@
       </div>
 
     </div>
+
+    <pre>
+      {{profesor.json}}
+    </pre>
 
   </body>
 </html>
