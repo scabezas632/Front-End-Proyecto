@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-md-12 text-right">
         <button [routerLink]="['/profesor','nuevo']"
-                class="btn btn-outline-primary margin-30-bottom"
+                class="btn btn-outline-success margin-30-bottom"
                 type="button" name="button">
           Nuevo Profesor
         </button>
@@ -28,23 +28,29 @@
           <table class="table">
             <thead class="thead-inverse">
               <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Rut</th>
-                <th class="text-right">Opciones</th>
+                <th class="w-5 text-center">#</th>
+                <th class="w-20 text-center">Nombre</th>
+                <th class="w-20 text-center">Rut</th>
+                <th class="w-20 text-center">Username</th>
+                <th class="w-35 text-center">Opciones</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let k of profesores | keys; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>{{ profesores[k].nombre + " " + profesores[k].apellido }}</td>
-                <td>{{ profesores[k].rut }}</td>
-                <td class="text-right w-120">
+                <td class="text-center">{{ profesores[k].id }}</td>
+                <td class="text-center">{{ profesores[k].name + " " + profesores[k].apellido }}</td>
+                <td class="text-center">{{ profesores[k].rut }}</td>
+                <td class="text-center">{{ profesores[k].username }}</td>
+                <td class="text-center">
                   <button [routerLink]="['/profesor', k]"
-                          type="button" class="btn btn-outline-success">
+                          type="button" class="btn btn-outline-info">
+                    Ver
+                  </button>
+                  <button [routerLink]="['/profesor', k]"
+                          type="button" class="btn btn-outline-primary">
                     Editar
                   </button>
-                  <button (click)="borrarProfesor(k)"
+                  <button (click)="borrarProfesor(1)"
                           type="button" class="btn btn-outline-danger">
                     Eliminar
                   </button>
@@ -55,7 +61,7 @@
 
           <div *ngIf="( profesores | keys ).length === 0 && !loading"
                 class="alert alert-info" role="alert">
-            <strong>No hay</strong> registros que mostrar
+            <strong>No hay</strong> profesores registrados
           </div>
 
           <div *ngIf="loading"

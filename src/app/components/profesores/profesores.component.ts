@@ -3,7 +3,8 @@ import { ProfesoresService } from '../../services/profesores.service';
 
 @Component({
   selector: 'app-profesores',
-  templateUrl: './profesores.component.html'
+  templateUrl: './profesores.component.html',
+  styleUrls: ['./profesores.component.css']
 })
 export class ProfesoresComponent implements OnInit {
 

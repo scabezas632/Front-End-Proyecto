@@ -7,8 +7,10 @@ import 'rxjs/Rx'
 @Injectable()
 export class ProfesoresService {
 
-  profesoresUrl:string = "https://paralela-2fcd6.firebaseio.com/Profesores.json";
-  profesorUrl:string = "https://paralela-2fcd6.firebaseio.com/Profesores/";
+  // profesoresUrl:string = "https://paralela-2fcd6.firebaseio.com/Profesores.json";
+  profesoresUrl:string = "http://localhost:8000/profesores";
+  // profesorUrl:string = "https://paralela-2fcd6.firebaseio.com/Profesores/";
+  profesorUrl:string = "http://localhost:8000/profesores"
 
   constructor( private http:Http ) { }
 
@@ -33,7 +35,7 @@ export class ProfesoresService {
       'Content-Type':'application/json'
     });
 
-    let url = `${ this.profesorUrl }/${ key$ }.json`;
+    let url = `${ this.profesorUrl }/${ key$ }`;
 
     return this.http.put( url, body, { headers } )
         .map( res=>{
@@ -43,15 +45,20 @@ export class ProfesoresService {
   }
 
   getProfesor( key$:string ){
-    let url = `${ this.profesorUrl }/${ key$ }.json`;
+    let url = `${ this.profesorUrl }/${ key$ }`;
     return this.http.get( url )
         .map( res=>res.json() );
   }
 
   getProfesores(){
 
+    // return this.http.get( this.profesoresUrl )
+    //     .map( res=>res.json() );
     return this.http.get( this.profesoresUrl )
-        .map( res=>res.json() );
+        .map( res=>{
+          console.log(res.json());
+          return res.json();
+        })
   }
 
   borrarProfesor( key$:string ){

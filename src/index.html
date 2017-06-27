@@ -26,5 +26,17 @@
 </head>
 <body>
   <app-root></app-root>
+  <script type="text/javascript" src="./assets/js/jquery.table2csv.js"></script>
+
+  <script>
+      $(function () {
+          $('table').table2CSV({
+              type: "csv",
+              buttonContent: "Export to csv",
+              fileName: "id"
+          });
+
+      });
+  </script>
 </body>
 </html>

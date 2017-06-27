@@ -12,7 +12,7 @@ import { SalasService } from '../../services/salas.service';
 export class SalaComponent implements OnInit {
 
   private sala:Sala = {
-    nombre:""
+    nombre:null
   }
 
   nuevo:boolean = false;

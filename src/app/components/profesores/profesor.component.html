@@ -20,58 +20,214 @@
     <div class="row animated fadeIn fast">
       <div class="col-md-12">
 
-        <form (ngSubmit)="guardar()" #forma="ngForm">
+        <form [formGroup]="formas" (ngSubmit)="guardar(forma)" #forma="ngForm">
+          <div>
+            <div class="card card-info-margin">
+              <h3 class="card-header">
+                Información del profesor
+              </h3>
+              <div class="card-block">
+                <div class="form-group row" [ngClass]="{ 'has-danger': (!formas.get('nombre').valid) && formas.get('nombre').touched }">
+                    <label class="col-2 col-form-label">Nombre</label>
+                    <div class="col-8">
+                    <input [(ngModel)]="profesor.nombre"
+                            name="nombre"
+                            type="text"
+                            class="form-control"
+                            placeholder="Nombre del Profesor"
+                            formControlName="nombre">
 
-          <div class="form-group">
-            <label>Nombre</label>
-            <input [(ngModel)]="profesor.nombre"
-                    name="nombre"
-                    type="text"
-                    class="form-control"
-                    placeholder="Nombre del Profesor"
-                    required>
+                    <div *ngIf="formas.controls['nombre'].errors?.required && formas.get('nombre').touched"
+                          class="form-control-feedback">
+                      El nombre es obligatorio.
+                    </div>
+                    <div *ngIf="formas.controls['nombre'].errors?.minlength"
+                          class="form-control-feedback">
+                      Por lo menos {{ formas.controls['nombre'].errors.minlength.requiredLength }} caracteres.
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="form-group row" [ngClass]="{ 'has-danger': (!formas.get('apellido').valid) && formas.get('apellido').touched }">
+                  <label class="col-2 col-form-label">Apellido</label>
+                  <div class="col-8">
+                    <input  [(ngModel)]="profesor.apellido"
+                            name="apellido"
+                            type="text"
+                            class="form-control"
+                            placeholder="Apellido del Profesor"
+                            formControlName="apellido">
+
+                    <div *ngIf="formas.controls['apellido'].errors?.required && formas.get('apellido').touched"
+                          class="form-control-feedback">
+                      El apellido es obligatorio.
+                    </div>
+                    <div *ngIf="formas.controls['apellido'].errors?.minlength"
+                          class="form-control-feedback">
+                      Por lo menos {{ formas.controls['apellido'].errors.minlength.requiredLength }} caracteres.
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="form-group row" [ngClass]="{ 'has-danger': (!formas.get('rut').valid) && formas.get('rut').touched }">
+                  <label class="col-2 col-form-label">RUT</label>
+                  <div class="col-8">
+                    <input  [(ngModel)]="profesor.rut"
+                            name="rut"
+                            type="number"
+                            class="form-control"
+                            placeholder="Rut del Profesor"
+                            formControlName="rut">
+
+                    <div *ngIf="formas.controls['rut'].errors?.required && formas.get('rut').touched"
+                          class="form-control-feedback">
+                      El rut es obligatorio.
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="form-group row" [ngClass]="{ 'has-danger': (!formas.get('email').valid) && formas.get('email').touched }">
+                  <label class="col-2 col-form-label">E-mail</label>
+                  <div class="col-8">
+                    <input  [(ngModel)]="profesor.email"
+                            name="email"
+                            type="email"
+                            class="form-control"
+                            placeholder="E-mail del Profesor"
+                            formControlName="email">
+
+                    <div *ngIf="formas.controls['email'].errors?.required && formas.get('email').touched"
+                          class="form-control-feedback">
+                      El email es obligatorio.
+                    </div>
+                    <div *ngIf="formas.controls['email'].errors?.pattern"
+                          class="form-control-feedback">
+                      El campo no tiene formato de correo.
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card card-info-margin">
+              <h3 class="card-header">
+                Usuario del profesor
+              </h3>
+              <div class="card-block">
+                <div class="form-group row" [ngClass]="{ 'has-danger': (!formas.get('username').valid) && formas.get('username').touched }">
+                  <label class="col-2 col-form-label">Username</label>
+                  <div class="col-8">
+                    <input  [(ngModel)]="profesor.username"
+                            name="username"
+                            type="text"
+                            class="form-control"
+                            placeholder="Username del Profesor"
+                            formControlName="username">
+
+                    <div *ngIf="formas.controls['username'].errors?.required && formas.get('username').touched"
+                          class="form-control-feedback">
+                      El usernme es obligatorio.
+                    </div>
+                    <div *ngIf="formas.controls['username'].errors?.minlength"
+                          class="form-control-feedback">
+                      Por lo menos {{ formas.controls['username'].errors.minlength.requiredLength }} caracteres.
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="form-group row" [ngClass]="{ 'has-danger': (!formas.get('password1').valid) && formas.get('password1').touched }">
+                  <label class="col-2 col-form-label">Contraseña</label>
+                  <div class="col-8">
+                    <input  [(ngModel)]="profesor.password"
+                            name="password1"
+                            type="password"
+                            class="form-control"
+                            placeholder="Contraseña del usuario"
+                            formControlName="password1">
+
+                    <div *ngIf="formas.controls['password1'].errors?.required && formas.get('password1').touched"
+                          class="form-control-feedback">
+                      La contraseña es obligatoria.
+                    </div>
+                    <div *ngIf="formas.controls['password1'].errors?.minlength"
+                          class="form-control-feedback">
+                      La contraseña debe tener mínimo {{ formas.controls['password1'].errors.minlength.requiredLength }} caracteres.
+                    </div>
+                    <div *ngIf="formas.controls['password1'].errors?.maxlength"
+                          class="form-control-feedback">
+                      La contraseña debe tener máximo {{ formas.controls['password1'].errors.maxlength.requiredLength }} caracteres.
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="form-group row" [ngClass]="{ 'has-danger': (!formas.get('password2').valid) && formas.get('password2').touched }">
+                  <label class="col-2 col-form-label">Repetir contraseña</label>
+                  <div class="col-8">
+                    <input  name="password2"
+                            type="password"
+                            class="form-control"
+                            placeholder="Repetir la contraseña del usuario"
+                            formControlName="password2">
+
+                    <div *ngIf="!formas.controls['password2'].errors?.passwordiguales && formas.get('password2').touched"
+                          class="form-control-feedback">
+                      La contraseña es distinta a la ingresada en el campo anteerior.
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tabla de horarios -->
+            <div class="form-group">
+            	<div class="card animated fadeIn card-info-margin">
+            		<h3 class="card-header">Disponibilidad de horario</h3>
+            		<div class="card-block">
+            			<table id="example2" class="table table-bordered table-hover" table>
+                    <thead class="thead-inverse">
+                      <tr>
+                        <th style="text-align: center">Periodo</th>
+                        <th style="text-align: center">Lunes</th>
+                        <th style="text-align: center">Martes</th>
+            						<th style="text-align: center">Jueves</th>
+                        <th style="text-align: center">Miércoles</th>
+            						<th style="text-align: center">Viernes</th>
+            						<th style="text-align: center">Sábado</th>
+                      </tr>
+            				</thead>
+            				<tbody>
+            						<tr *ngFor="let periodo of periodos">
+            							<td class="text-center">{{periodo+1}}</td>
+                          <td [attr.id]="'0-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('0-' + periodo)), 'noMarcado': !getEstadoBloque('0-' + periodo)}" (click)="changeEstadoBloque('0-' + periodo)"></td>
+                          <td [attr.id]="'1-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('1-' + periodo)), 'noMarcado': !getEstadoBloque('1-' + periodo)}" (click)="changeEstadoBloque('1-' + periodo)"></td>
+                          <td [attr.id]="'2-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('2-' + periodo)), 'noMarcado': !getEstadoBloque('2-' + periodo)}" (click)="changeEstadoBloque('2-' + periodo)"></td>
+                          <td [attr.id]="'3-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('3-' + periodo)), 'noMarcado': !getEstadoBloque('3-' + periodo)}" (click)="changeEstadoBloque('3-' + periodo)"></td>
+                          <td [attr.id]="'4-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('4-' + periodo)), 'noMarcado': !getEstadoBloque('4-' + periodo)}" (click)="changeEstadoBloque('4-' + periodo)"></td>
+                          <td [attr.id]="'5-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('5-' + periodo)), 'noMarcado': !getEstadoBloque('5-' + periodo)}" (click)="changeEstadoBloque('5-' + periodo)"></td>
+            						<tr>
+            				</tbody>
+            			</table>
+            		</div>
+            	</div>
+            </div>
+
+            <div class="form-group">
+              <!-- [disabled]="!formas.valid" -->
+              <button
+                      type="submit"
+                      class="btn btn-outline-primary">
+                Guardar
+              </button>
+            </div>
           </div>
-
-          <div class="form-group">
-            <label>Apellido</label>
-            <input [(ngModel)]="profesor.apellido"
-                    name="apellido"
-                    type="text"
-                    class="form-control"
-                    placeholder="Apellido del Profesor"
-                    required>
-          </div>
-
-          <div class="form-group">
-            <label>E-mail</label>
-            <input [(ngModel)]="profesor.email"
-                    name="email"
-                    type="email"
-                    class="form-control"
-                    placeholder="E-mail del Profesor"
-                    required>
-          </div>
-
-          <div class="form-group">
-            <label>RUT</label>
-            <input [(ngModel)]="profesor.rut"
-                    name="rut"
-                    type="number"
-                    class="form-control"
-                    placeholder="Rut del Profesor"
-                    required>
-          </div>
-
-          <div class="form-group">
-            <button [disabled]="!forma.valid"
-                    type="submit"
-                    class="btn btn-outline-primary">
-              Guardar
-            </button>
-          </div>
-
         </form>
-
       </div>
 
     </div>

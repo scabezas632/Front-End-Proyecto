@@ -1,5 +1,4 @@
 import { RouterModule, Routes } from '@angular/router';
-import { DisponibilidadComponent } from './components/disponibilidad/disponibilidad.component';
 
 
 import { HorarioComponent } from './components/horario/horario.component';
@@ -13,7 +12,6 @@ import { SalaComponent } from './components/salas/sala.component';
 
 
 const APP_ROUTES: Routes = [
-  { path: 'disponibilidad', component: DisponibilidadComponent },
   { path: 'horario', component: HorarioComponent },
   { path: 'profesores', component: ProfesoresComponent },
   { path: 'profesor/:id', component: ProfesorComponent },
