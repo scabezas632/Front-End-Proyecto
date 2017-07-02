@@ -21,17 +21,13 @@ import { DepartamentosService } from '../../services/departamentos.service';
 export class ProfesorComponent{
 
   public profesor:Profesor = {
+    id:null,
     name:"",
     apellido:"",
-    email:"",
-    rut:null
-    // departamento:"",
-    // jerarquia:"",
-    // contrato:"A contrata"
-    // username:"",
-    // password:""
+    rut:null,
   }
 
+  public dias:any[]=[0,1,2,3,4,5];
   public periodos:any[]=[0,1,2,3,4,5,6,7,8];
   public matrizHorario: any[] = [[false, false, false, false, false, false],
                 							   [false, false, false, false, false, false],
@@ -63,46 +59,10 @@ export class ProfesorComponent{
                                       Validators.required,
                                       Validators.minLength(3)
                                     ] ),
-      'email': new FormControl('', [
-                                      Validators.required,
-                                      Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")
-                                    ]),
       'rut': new FormControl('', [
                                     Validators.required
                                   ] ),
-      'departamento': new FormControl('', [
-                                    Validators.required
-                                  ] ),
-      'jerarquia': new FormControl('', [
-                                    Validators.required
-                                  ] ),
-      'contrato': new FormControl('', [
-                                    Validators.required
-                                  ] ),
-      // 'username': new FormControl('', [
-      //                                   Validators.required,
-      //                                   Validators.minLength(5)
-      //                                 ] ),
-      // 'password1': new FormControl('', [
-      //                               Validators.required,
-      //                               Validators.minLength(5),
-      //                               Validators.maxLength(12)
-      //                             ] ),
-      // 'password2': new FormControl(),
     })
-
-
-    // this.formas.controls['password2'].setValidators([
-    //   Validators.required,
-    //   this.passwordIguales.bind( this.formas )
-    // ])
-
-    //OBTIENE LOS DEPARTAMENTOS PARA EL SELECT
-    this._departamentosService.getDepartamentos()
-          .subscribe( data => {
-              console.log(data);
-              this.departamentos = data;
-          })
 
 
     this.activatedRoute.params
@@ -140,6 +100,22 @@ export class ProfesorComponent{
       this.matrizHorario[columna][fila]=!this.matrizHorario[columna][fila];
     }
   }
+
+  completarDia(dia, llenar){
+
+    for(let i=0;i<=8;i++){
+      if(llenar==true){
+        if(this.getEstadoBloque( dia+"-"+i )==false){
+          this.changeEstadoBloque( dia+"-"+i );
+        }
+      }else{
+        if(this.getEstadoBloque( dia+"-"+i )==true){
+          this.changeEstadoBloque( dia+"-"+i );
+        }
+      }
+    }
+  }
+
 
   guardar( forma:any ){
     console.log(forma);

@@ -9,7 +9,6 @@ import { APP_ROUTING } from './app.routes';
 
 //COMPONENTES
 import { AppComponent } from './app.component';
-import { HorarioComponent } from './components/horario/horario.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
 
 //Profesores
@@ -31,7 +30,6 @@ import { KeysPipe } from './pipes/keys.pipe';
 @NgModule({
   declarations: [
     AppComponent,
-    HorarioComponent,
     NavbarComponent,
     ProfesoresComponent,
     SalasComponent,
