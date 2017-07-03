@@ -15,12 +15,11 @@ class CreateDisponibilitiesTable extends Migration {
 		Schema::create('disponibilities', function(Blueprint $table)
 		{
 			$table->increments('id');
-
-			$table->tinyInteger('dia');
+			$table->string('dia');
 			$table->tinyInteger('bloque');
 
             $table->integer('teacher_1_id')->unsigned();
-            $table->foreign('teacher_1_id')->references('id')->on('teachers');
+            $table->foreign('teacher_1_id')->references('id')->on('users');
 
             $table->integer('course_1_id')->unsigned();
             $table->foreign('course_1_id')->references('id')->on('courses');

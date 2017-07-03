@@ -5,7 +5,7 @@ use App\Disponibility;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Teacher;
+use App\User;
 use Illuminate\Http\Request;
 
 class DisponibilidadController extends Controller {
@@ -18,7 +18,7 @@ class DisponibilidadController extends Controller {
 	public function index($id)
 	{
 
-        $profesores = Teacher::find($id);
+        $profesores = User::find($id);
         if(!$profesores){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
         }
@@ -57,7 +57,7 @@ class DisponibilidadController extends Controller {
 
         //BUSCAR
 
-        $profesor = Teacher::find($idProfesor);
+        $profesor = User::find($idProfesor);
         if(!$profesor){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
         }
@@ -111,7 +111,7 @@ class DisponibilidadController extends Controller {
 	{
         $metodo = $request->method();
 
-        $profesores = Teacher::find($idProfesores);
+        $profesores = User::find($idProfesores);
         if(!$profesores){
             return response()->json(['mensaje'=>'No se encontro registro'],404);
         }
@@ -159,7 +159,7 @@ class DisponibilidadController extends Controller {
 	 */
 	public function destroy($idProfesor,$idDispo,$idcurso)
 	{
-        $profesores = Teacher::find($idProfesor);
+        $profesores = User::find($idProfesor);
         if(!$profesores){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
         }
