@@ -3,7 +3,8 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\User;
+
+use App\Teacher;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Null_;
 
@@ -17,7 +18,7 @@ class TeacherController extends Controller {
 
 	public function index()
 	{
-		return response()->json(['datos'=>User::all()],202);
+		return response()->json(['datos'=>Teacher::all()],202);
 	}
 
 	/**
@@ -83,7 +84,7 @@ class TeacherController extends Controller {
 	 */
 	public function show($id)
 	{
-		$profesor = User::find($id);
+		$profesor = Teacher::find($id);
 		if(!$profesor){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
         }
@@ -126,6 +127,12 @@ class TeacherController extends Controller {
                 $profesor->apellido=$apellido;
             }
             //3
+            //5
+            $rut=$request->get('rut');
+            if ($rut!=null && $rut!=""){
+                $profesor->rut=$rut;
+            }
+            /*
             $email=$request->get('email');
             if ($email!=null && $email!=""){
                 $profesor->email=$email;
@@ -134,11 +141,6 @@ class TeacherController extends Controller {
             $password=$request->get('password');
             if ($password!=null && $password!=""){
                 $profesor->password=$password;
-            }
-            //5
-            $rut=$request->get('rut');
-            if ($rut!=null && $rut!=""){
-                $profesor->rut=$rut;
             }
             //6
             $departamento=$request->get('departamento');
@@ -153,8 +155,8 @@ class TeacherController extends Controller {
             //8
             $contrato=$request->get('contrato');
             if ($contrato!=null && $contrato!=""){
-                $profesor->contrato=$contrato;
-            }
+               $profesor->contrato=$contrato;
+            }*/
             $profesor->save();
             return response()->json(['mensaje'=>'profesor ha sido editado'],202);
         }
@@ -173,6 +175,7 @@ class TeacherController extends Controller {
 
         }
         //3
+/*
         $email=$request->get('email');
         if (!$email){
             return response()->json(['mensaje'=>'datos invalidos'],404);
@@ -185,11 +188,13 @@ class TeacherController extends Controller {
 
         }
         //5
+*/
         $rut=$request->get('rut');
         if (!$rut){
             return response()->json(['mensaje'=>'datos invalidos'],404);
 
         }
+/*
         //6
         $departamento=$request->get('departamento');
         if (!$departamento){
@@ -208,15 +213,18 @@ class TeacherController extends Controller {
             return response()->json(['mensaje'=>'datos invalidos'],404);
 
         }
+*/
         //Paso la prueba:
         $profesor->name=$nombre;
         $profesor->apellido=$apellido;
+        $profesor->rut=$rut;
+/*
         $profesor->email=$email;
         $profesor->password=$password;
-        $profesor->rut=$rut;
         $profesor->departamento=$departamento;
         $profesor->jerarquia=$jerarquia;
         $profesor->contrato=$contrato;
+*/
         //Guardar
         $profesor->save();
         return response()->json(['mensaje'=>'Profesor ha sido editado'],202);
@@ -231,7 +239,7 @@ class TeacherController extends Controller {
 	 */
 	public function destroy($id)
 	{
-	    $profesor = User::find($id);
+	    $profesor = Teacher::find($id);
         if (!$profesor){
             return response()->json(['mensaje'=>'datos invalidos'],404);
         }
