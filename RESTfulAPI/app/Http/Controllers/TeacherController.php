@@ -3,8 +3,12 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+<<<<<<< HEAD
 
 use App\Teacher;
+=======
+use App\User;
+>>>>>>> refs/remotes/scabezas632/master
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Null_;
 
@@ -18,7 +22,11 @@ class TeacherController extends Controller {
 
 	public function index()
 	{
+<<<<<<< HEAD
 		return response()->json(['datos'=>Teacher::all()],202);
+=======
+		return response()->json(['datos'=>User::all()],202);
+>>>>>>> refs/remotes/scabezas632/master
 	}
 
 	/**
@@ -84,7 +92,11 @@ class TeacherController extends Controller {
 	 */
 	public function show($id)
 	{
+<<<<<<< HEAD
 		$profesor = Teacher::find($id);
+=======
+		$profesor = User::find($id);
+>>>>>>> refs/remotes/scabezas632/master
 		if(!$profesor){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
         }
@@ -127,12 +139,15 @@ class TeacherController extends Controller {
                 $profesor->apellido=$apellido;
             }
             //3
+<<<<<<< HEAD
             //5
             $rut=$request->get('rut');
             if ($rut!=null && $rut!=""){
                 $profesor->rut=$rut;
             }
             /*
+=======
+>>>>>>> refs/remotes/scabezas632/master
             $email=$request->get('email');
             if ($email!=null && $email!=""){
                 $profesor->email=$email;
@@ -142,6 +157,14 @@ class TeacherController extends Controller {
             if ($password!=null && $password!=""){
                 $profesor->password=$password;
             }
+<<<<<<< HEAD
+=======
+            //5
+            $rut=$request->get('rut');
+            if ($rut!=null && $rut!=""){
+                $profesor->rut=$rut;
+            }
+>>>>>>> refs/remotes/scabezas632/master
             //6
             $departamento=$request->get('departamento');
             if ($departamento!=null && $departamento!=""){
@@ -155,8 +178,13 @@ class TeacherController extends Controller {
             //8
             $contrato=$request->get('contrato');
             if ($contrato!=null && $contrato!=""){
+<<<<<<< HEAD
                $profesor->contrato=$contrato;
             }*/
+=======
+                $profesor->contrato=$contrato;
+            }
+>>>>>>> refs/remotes/scabezas632/master
             $profesor->save();
             return response()->json(['mensaje'=>'profesor ha sido editado'],202);
         }
@@ -175,7 +203,10 @@ class TeacherController extends Controller {
 
         }
         //3
+<<<<<<< HEAD
 /*
+=======
+>>>>>>> refs/remotes/scabezas632/master
         $email=$request->get('email');
         if (!$email){
             return response()->json(['mensaje'=>'datos invalidos'],404);
@@ -188,13 +219,19 @@ class TeacherController extends Controller {
 
         }
         //5
+<<<<<<< HEAD
 */
+=======
+>>>>>>> refs/remotes/scabezas632/master
         $rut=$request->get('rut');
         if (!$rut){
             return response()->json(['mensaje'=>'datos invalidos'],404);
 
         }
+<<<<<<< HEAD
 /*
+=======
+>>>>>>> refs/remotes/scabezas632/master
         //6
         $departamento=$request->get('departamento');
         if (!$departamento){
@@ -213,6 +250,7 @@ class TeacherController extends Controller {
             return response()->json(['mensaje'=>'datos invalidos'],404);
 
         }
+<<<<<<< HEAD
 */
         //Paso la prueba:
         $profesor->name=$nombre;
@@ -225,6 +263,17 @@ class TeacherController extends Controller {
         $profesor->jerarquia=$jerarquia;
         $profesor->contrato=$contrato;
 */
+=======
+        //Paso la prueba:
+        $profesor->name=$nombre;
+        $profesor->apellido=$apellido;
+        $profesor->email=$email;
+        $profesor->password=$password;
+        $profesor->rut=$rut;
+        $profesor->departamento=$departamento;
+        $profesor->jerarquia=$jerarquia;
+        $profesor->contrato=$contrato;
+>>>>>>> refs/remotes/scabezas632/master
         //Guardar
         $profesor->save();
         return response()->json(['mensaje'=>'Profesor ha sido editado'],202);
@@ -239,7 +288,11 @@ class TeacherController extends Controller {
 	 */
 	public function destroy($id)
 	{
+<<<<<<< HEAD
 	    $profesor = Teacher::find($id);
+=======
+	    $profesor = User::find($id);
+>>>>>>> refs/remotes/scabezas632/master
         if (!$profesor){
             return response()->json(['mensaje'=>'datos invalidos'],404);
         }

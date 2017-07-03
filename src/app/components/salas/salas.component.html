@@ -2,23 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>CRUD Salas</title>
+    <title>Lista de Salas</title>
   </head>
   <body>
-    <h1 class="margin-30">CRUD Salas</h1>
-    <hr>
-
-    <div class="row">
-      <div class="col-md-12 text-right">
-        <button [routerLink]="['/sala','nueva']"
-                class="btn btn-outline-primary margin-30-bottom"
-                type="button" name="button">
-          Nueva Sala
-        </button>
-      </div>
-      <br>
-
-    </div>
+    <h1 class="margin-30">Lista de Salas</h1>
 
     <div class="row animated fadeIn fast">
       <div class="col-md-12">
@@ -28,24 +15,24 @@
           <table class="table">
             <thead class="thead-inverse">
               <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th class="text-right">Opciones</th>
+                <th class="w-5 text-center">#</th>
+                <th class="text-center">Nombre de Sala</th>
+                <th class="text-center">Opciones</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let k of salas | keys; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>{{ salas[k].nombre }}</td>
-                <td class="text-right w-120">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-center">{{ salas[k].nombre }}</td>
+                <td class="text-center">
                   <button [routerLink]="['/sala', k]"
-                          type="button" class="btn btn-outline-success">
-                    Editar
+                          type="button" class="btn btn-outline-primary">
+                    Ver Horario
                   </button>
-                  <button (click)="borrarSala(k)"
+                  <!-- <button (click)="borrarSala(k)"
                           type="button" class="btn btn-outline-danger">
                     Eliminar
-                  </button>
+                  </button> -->
                 </td>
               </tr>
             </tbody>

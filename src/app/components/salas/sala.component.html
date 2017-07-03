@@ -2,49 +2,65 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Sala</title>
+    <title>Profesor</title>
   </head>
   <body>
-    <h3 class="margin-30">Sala: <small>{{ sala.nombre }}</small></h3>
-    <button [routerLink]="'/salas'"
-            class="btn btn-outline-danger">
-      Regresar
-    </button>
-    <button  (click)="agregarNuevo(forma)"
-            type="button"
-            class="btn btn-outline-success">
-      Nueva Sala
-    </button>
-    <hr>
-
     <div class="row animated fadeIn fast">
       <div class="col-md-12">
 
-        <form (ngSubmit)="guardar()" #forma="ngForm">
+        <form [formGroup]="formas" (ngSubmit)="guardar(forma)" #forma="ngForm">
+          <div>
 
-          <div class="form-group">
-            <label>Nombre</label>
-            <input [(ngModel)]="sala.nombre"
-                    name="nombre"
-                    type="text"
-                    class="form-control"
-                    placeholder="Nombre de la Sala"
-                    required>
+            <!-- Tabla de horarios -->
+            <div class="form-group">
+            	<div class="card animated fadeIn card-info-margin card text-center">
+            		<h3 class="card-header">Horario de la sala {{ sala.nombre }}</h3>
+
+                <div class="card-block">
+                  <div class="form-group">
+                    <button [routerLink]="'/salas'"
+                            class="btn btn-outline-danger">
+                      Regresar
+                    </button>
+                  </div>
+            			<table class="table table-bordered table-hover responsive" table>
+                    <thead class="thead-inverse">
+                      <tr>
+                        <th style="text-align: center">Periodo</th>
+                        <th style="text-align: center">Lunes</th>
+                        <th style="text-align: center">Martes</th>
+            						<th style="text-align: center">Jueves</th>
+                        <th style="text-align: center">Miércoles</th>
+            						<th style="text-align: center">Viernes</th>
+            						<th style="text-align: center">Sábado</th>
+                      </tr>
+            				</thead>
+            				<tbody>
+            						<tr *ngFor="let periodo of periodos">
+            							<td class="text-center">{{periodo+1}}</td>
+                          <td [attr.id]="'0-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('0-' + periodo)), 'noMarcado': !getEstadoBloque('0-' + periodo)}" (click)="changeEstadoBloque('0-' + periodo)"></td>
+                          <td [attr.id]="'1-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('1-' + periodo)), 'noMarcado': !getEstadoBloque('1-' + periodo)}" (click)="changeEstadoBloque('1-' + periodo)"></td>
+                          <td [attr.id]="'2-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('2-' + periodo)), 'noMarcado': !getEstadoBloque('2-' + periodo)}" (click)="changeEstadoBloque('2-' + periodo)"></td>
+                          <td [attr.id]="'3-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('3-' + periodo)), 'noMarcado': !getEstadoBloque('3-' + periodo)}" (click)="changeEstadoBloque('3-' + periodo)"></td>
+                          <td [attr.id]="'4-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('4-' + periodo)), 'noMarcado': !getEstadoBloque('4-' + periodo)}" (click)="changeEstadoBloque('4-' + periodo)"></td>
+                          <td [attr.id]="'5-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('5-' + periodo)), 'noMarcado': !getEstadoBloque('5-' + periodo)}" (click)="changeEstadoBloque('5-' + periodo)"></td>
+                        </tr>
+            				</tbody>
+            			</table>
+            		</div>
+            	</div>
+            </div>
+
+
           </div>
-
-          <div class="form-group">
-            <button [disabled]="!forma.valid"
-                    type="submit"
-                    class="btn btn-outline-primary">
-              Guardar
-            </button>
-          </div>
-
         </form>
-
       </div>
 
     </div>
+
+    <pre>
+      {{profesor.json}}
+    </pre>
 
   </body>
 </html>

@@ -7,13 +7,27 @@ import { SalasService } from '../../services/salas.service';
 @Component({
   selector: 'app-sala',
   templateUrl: './sala.component.html',
-  styles: []
+  styleUrls: ['./salas.component.css']
 })
 export class SalaComponent implements OnInit {
 
   private sala:Sala = {
-    nombre:""
+    nombre:null
   }
+
+  public dias:any[]=[0,1,2,3,4,5];
+  public periodos:any[]=[0,1,2,3,4,5,6,7,8];
+  public matrizHorario: any[] = [[false, false, false, false, false, false],
+                							   [false, false, false, false, false, false],
+                							   [false, false, false, false, false, false],
+                							   [false, false, false, false, false, false],
+                							   [false, false, false, false, false, false],
+                							   [false, false, false, false, false, false],
+                							   [false, false, false, false, false, false],
+                							   [false, false, false, false, false, false],
+                							   [false, false, false, false, false, false]];
+
+  public departamentos:any[] = [];
 
   nuevo:boolean = false;
   id:string = "";
@@ -34,6 +48,44 @@ export class SalaComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  //Funciones de horario
+  getEstadoBloque(coordenada){
+    let dato = coordenada.split("-");
+    let fila = +dato[0];
+    let columna = +dato[1];
+
+    // console.log("bloques["+columna+"]["+fila+"]: "+this.matrizHorario[columna][fila]);
+
+    return this.matrizHorario[columna][fila];
+  }
+
+  changeEstadoBloque(coordenada){
+    let dato = coordenada.split("-");
+    let fila = +dato[0];
+    let columna = +dato[1];
+
+    if(fila==5 && columna>=4){
+      this.matrizHorario[columna][fila]=this.matrizHorario[columna][fila];
+    }else{
+      this.matrizHorario[columna][fila]=!this.matrizHorario[columna][fila];
+    }
+  }
+
+  completarDia(dia, llenar){
+
+    for(let i=0;i<=8;i++){
+      if(llenar==true){
+        if(this.getEstadoBloque( dia+"-"+i )==false){
+          this.changeEstadoBloque( dia+"-"+i );
+        }
+      }else{
+        if(this.getEstadoBloque( dia+"-"+i )==true){
+          this.changeEstadoBloque( dia+"-"+i );
+        }
+      }
+    }
   }
 
 

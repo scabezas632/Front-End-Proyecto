@@ -7,8 +7,8 @@ import 'rxjs/Rx'
 @Injectable()
 export class ProfesoresService {
 
-  profesoresUrl:string = "https://paralela-2fcd6.firebaseio.com/Profesores.json";
-  profesorUrl:string = "https://paralela-2fcd6.firebaseio.com/Profesores/";
+  profesoresUrl:string = "http://localhost:8000/profesores";
+  profesorUrl:string = "http://localhost:8000/profesores"
 
   constructor( private http:Http ) { }
 
@@ -21,8 +21,8 @@ export class ProfesoresService {
 
     return this.http.post( this.profesoresUrl, body, { headers } )
         .map( res=>{
-          console.log(res.json());
-          return res.json();
+          console.log(res.json().datos);
+          return res.json().datos;
         })
   }
 
@@ -33,32 +33,37 @@ export class ProfesoresService {
       'Content-Type':'application/json'
     });
 
-    let url = `${ this.profesorUrl }/${ key$ }.json`;
+    let url = `${ this.profesorUrl }/${ key$ }`;
 
     return this.http.put( url, body, { headers } )
         .map( res=>{
-          console.log(res.json());
-          return res.json();
+          console.log(res.json().datos);
+          return res.json().datos;
         })
   }
 
   getProfesor( key$:string ){
-    let url = `${ this.profesorUrl }/${ key$ }.json`;
+    let url = `${ this.profesorUrl }/${ key$ }`;
     return this.http.get( url )
-        .map( res=>res.json() );
+        .map( res=>res.json().datos );
   }
 
   getProfesores(){
 
+    // return this.http.get( this.profesoresUrl )
+    //     .map( res=>res.json() );
     return this.http.get( this.profesoresUrl )
-        .map( res=>res.json() );
+        .map( res=>{
+          console.log(res.json().datos);
+          return res.json().datos;
+        })
   }
 
   borrarProfesor( key$:string ){
 
     let url = `${ this.profesorUrl }/${ key$ }.json`;
     return this.http.delete( url )
-          .map( res=> res.json() )
+          .map( res=> res.json().datos )
 
   }
 

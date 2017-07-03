@@ -23,7 +23,11 @@ class Course extends Model {
 
     public function teacher()
     {
+<<<<<<< HEAD
         return $this->belongsToMany('App\Teacher','disponibilities','teacher_1_id','course_1_id');
+=======
+        return $this->belongsToMany('App\User','disponibilities','teacher_1_id','course_1_id');
+>>>>>>> refs/remotes/scabezas632/master
     }
 
     public function classrooms()

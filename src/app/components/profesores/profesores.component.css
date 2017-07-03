@@ -1,0 +1,28 @@
+.card-info-margin{
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.marcado{
+  background-color: #5FFF38;
+}
+
+.noMarcado{
+  background-color: #FA4A4A;
+}
+
+.disabled{
+  background-color: #C4C4C4;
+}
+
+.w-5{
+  width: 5%;
+}
+
+.w-20{
+  width: 20%;
+}
+
+.w-35{
+  width: 35%;
+}

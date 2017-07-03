@@ -5,7 +5,11 @@ use App\Disponibility;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+<<<<<<< HEAD
 use App\Teacher;
+=======
+use App\User;
+>>>>>>> refs/remotes/scabezas632/master
 use Illuminate\Http\Request;
 
 class DisponibilidadController extends Controller {
@@ -18,7 +22,11 @@ class DisponibilidadController extends Controller {
 	public function index($id)
 	{
 
+<<<<<<< HEAD
         $profesores = Teacher::find($id);
+=======
+        $profesores = User::find($id);
+>>>>>>> refs/remotes/scabezas632/master
         if(!$profesores){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
         }
@@ -57,7 +65,11 @@ class DisponibilidadController extends Controller {
 
         //BUSCAR
 
+<<<<<<< HEAD
         $profesor = Teacher::find($idProfesor);
+=======
+        $profesor = User::find($idProfesor);
+>>>>>>> refs/remotes/scabezas632/master
         if(!$profesor){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
         }
@@ -111,7 +123,11 @@ class DisponibilidadController extends Controller {
 	{
         $metodo = $request->method();
 
+<<<<<<< HEAD
         $profesores = Teacher::find($idProfesores);
+=======
+        $profesores = User::find($idProfesores);
+>>>>>>> refs/remotes/scabezas632/master
         if(!$profesores){
             return response()->json(['mensaje'=>'No se encontro registro'],404);
         }
@@ -159,7 +175,11 @@ class DisponibilidadController extends Controller {
 	 */
 	public function destroy($idProfesor,$idDispo,$idcurso)
 	{
+<<<<<<< HEAD
         $profesores = Teacher::find($idProfesor);
+=======
+        $profesores = User::find($idProfesor);
+>>>>>>> refs/remotes/scabezas632/master
         if(!$profesores){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
         }

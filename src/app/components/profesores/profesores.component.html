@@ -2,23 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>CRUD Profesores</title>
+    <title>Lista de Profesores</title>
   </head>
   <body>
-    <h1 class="margin-30">CRUD Profesores</h1>
-    <hr>
-
-    <div class="row">
-      <div class="col-md-12 text-right">
-        <button [routerLink]="['/profesor','nuevo']"
-                class="btn btn-outline-primary margin-30-bottom"
-                type="button" name="button">
-          Nuevo Profesor
-        </button>
-      </div>
-      <br>
-
-    </div>
+    <h1 class="margin-30">Lista de Profesores</h1>
 
     <div class="row animated fadeIn fast">
       <div class="col-md-12">
@@ -28,26 +15,26 @@
           <table class="table">
             <thead class="thead-inverse">
               <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Rut</th>
-                <th class="text-right">Opciones</th>
+                <th class="w-5 text-center">#</th>
+                <th class="w-20 text-center">Nombre</th>
+                <th class="w-20 text-center">Rut</th>
+                <th class="w-35 text-center">Opciones</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let k of profesores | keys; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>{{ profesores[k].nombre + " " + profesores[k].apellido }}</td>
-                <td>{{ profesores[k].rut }}</td>
-                <td class="text-right w-120">
-                  <button [routerLink]="['/profesor', k]"
-                          type="button" class="btn btn-outline-success">
-                    Editar
+                <td class="text-center">{{ i+1 }}</td>
+                <td class="text-center">{{ profesores[k].name + " " + profesores[k].apellido }}</td>
+                <td class="text-center">{{ profesores[k].rut }}</td>
+                <td class="text-center">
+                  <button [routerLink]="['/profesor', profesores[k].id]"
+                          type="button" class="btn btn-outline-primary">
+                    Ver/Editar Disponibilidad
                   </button>
-                  <button (click)="borrarProfesor(k)"
+                  <!-- <button (click)="borrarProfesor(profesores[k].id)"
                           type="button" class="btn btn-outline-danger">
                     Eliminar
-                  </button>
+                  </button> -->
                 </td>
               </tr>
             </tbody>
@@ -55,7 +42,7 @@
 
           <div *ngIf="( profesores | keys ).length === 0 && !loading"
                 class="alert alert-info" role="alert">
-            <strong>No hay</strong> registros que mostrar
+            <strong>No hay</strong> profesores registrados
           </div>
 
           <div *ngIf="loading"

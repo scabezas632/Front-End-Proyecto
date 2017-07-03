@@ -16,7 +16,11 @@ class CreateSchedulesTable extends Migration {
 		{
 			$table->increments('id');
 
+<<<<<<< HEAD
             $table->tinyInteger('dia');
+=======
+            $table->string('dia');
+>>>>>>> refs/remotes/scabezas632/master
             $table->tinyInteger('bloque');
 
             $table->integer('course_2_id')->unsigned();

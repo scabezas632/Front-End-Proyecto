@@ -2,21 +2,15 @@
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="#">HorariosApp</a>
+  <a class="navbar-brand"  [routerLink]="['salas']">HorariosApp</a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['horario']">Ver Horarios</a>
+        <a class="nav-link" [routerLink]="['salas']">Ver Horario Salas</a>
       </li>
       <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['disponibilidad']">Disponibilidad Horaria</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['salas']">Salas</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['profesores']">Profesores</a>
+        <a class="nav-link" [routerLink]="['profesores']">Disponibilidad Profesores</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
