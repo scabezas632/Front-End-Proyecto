@@ -16,7 +16,7 @@ class CreateSchedulesTable extends Migration {
 		{
 			$table->increments('id');
 
-            $table->string('dia');
+            $table->tinyInteger('dia');
             $table->tinyInteger('bloque');
 
             $table->integer('course_2_id')->unsigned();
