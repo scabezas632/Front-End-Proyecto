@@ -38,7 +38,7 @@ class TeacherController extends Controller {
 	 */
 	public function store(Request $request)
 	{
-        if(!$request->get('name'))
+        if(!$request->get('nombre'))
         {
             return response()->json(['mensaje'=>'datos invalidos o incompletos','codigo'=>'422'],422);
         }
@@ -72,7 +72,7 @@ class TeacherController extends Controller {
         }
 
 
-        User::create($request->all());
+        Teacher::create($request->all());
         return response()->json(['mensaje'=>'usuario ha sido creado'],202);
 	}
 
@@ -111,15 +111,15 @@ class TeacherController extends Controller {
 	public function update(Request $request, $id)
 	{
         $metodo = $request->method();
-        $profesor = User::find($id);
+        $profesor = Teacher::find($id);
 
         if ($metodo==="PATCH"){
 
             //Por cada atributo:
             //1
-            $nombre=$request->get('name');
+            $nombre=$request->get('nombre');
             if ($nombre!=null && $nombre!=""){
-                $profesor->name=$nombre;
+                $profesor->nombre=$nombre;
             }
             //2
             $apellido=$request->get('apellido');
@@ -163,7 +163,7 @@ class TeacherController extends Controller {
 
 
         //Con put, toma tados la wea
-        $nombre=$request->get('name');
+        $nombre=$request->get('nombre');
         if (!$nombre){
             return response()->json(['mensaje'=>'datos invalidos'],404);
 
@@ -215,7 +215,7 @@ class TeacherController extends Controller {
         }
 */
         //Paso la prueba:
-        $profesor->name=$nombre;
+        $profesor->nombre=$nombre;
         $profesor->apellido=$apellido;
         $profesor->rut=$rut;
 /*

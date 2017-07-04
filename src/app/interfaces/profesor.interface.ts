@@ -1,8 +1,8 @@
 
 export interface Profesor{
-  id:number;
-  name:string;
+  id?:number;
+  nombre:string;
   apellido:string;
-  rut:number;
-  key$?:string;
+  rut:string;
+
 }

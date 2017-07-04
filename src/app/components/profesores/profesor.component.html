@@ -8,15 +8,38 @@
     <div class="row animated fadeIn fast">
       <div class="col-md-12">
 
-        <form [formGroup]="formas" (ngSubmit)="guardar(forma)" #forma="ngForm">
+        <form [formGroup]="formas" (ngSubmit)="guardar()" #forma="ngForm">
           <div>
 
             <!-- Tabla de horarios -->
             <div class="form-group">
             	<div class="card animated fadeIn card-info-margin card text-center">
-            		<h3 class="card-header">Disponibilidad del profesor {{  profesor.name + " " + profesor.apellido  }}</h3>
+            		<h3 class="card-header">Disponibilidad del profesor {{  profesor.nombre + " " + profesor.apellido  }}</h3>
 
                 <div class="card-block">
+                  <div class="form-group">
+                    <div class="form-group row" [ngClass]="{ 'has-danger': (!formas.get('nombre').valid) && formas.get('nombre').touched }">
+                      <label class="col-2 col-form-label">Nombre</label>
+                      <div class="col-8">
+                      <input [(ngModel)]="profesor.nombre"
+                              name="nombre"
+                              type="text"
+                              class="form-control"
+                              placeholder="Nombre del Profesor"
+                              formControlName="nombre">
+                      <div *ngIf="formas.controls['nombre'].errors?.required && formas.get('nombre').touched"
+                          class="form-control-feedback">
+                        El nombre es obligatorio.
+                      </div>
+
+                      <div *ngIf="formas.controls['nombre'].errors?.minlength"
+                            class="form-control-feedback">
+                        Por lo menos {{ formas.controls['nombre'].errors.minlength.requiredLength }} caracteres.
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
                   <div class="form-group">
                     <!-- [disabled]="!formas.valid" -->
                     <button
@@ -78,10 +101,6 @@
       </div>
 
     </div>
-
-    <pre>
-      {{profesor.json}}
-    </pre>
 
   </body>
 </html>

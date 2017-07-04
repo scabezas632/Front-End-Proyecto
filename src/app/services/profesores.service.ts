@@ -22,7 +22,7 @@ export class ProfesoresService {
     return this.http.post( this.profesoresUrl, body, { headers } )
         .map( res=>{
           console.log(res.json().datos);
-          return res.json().datos;
+           res.json().datos;
         })
   }
 
@@ -61,7 +61,7 @@ export class ProfesoresService {
 
   borrarProfesor( key$:string ){
 
-    let url = `${ this.profesorUrl }/${ key$ }.json`;
+    let url = `${ this.profesorUrl }/${ key$ }`;
     return this.http.delete( url )
           .map( res=> res.json().datos )
 

@@ -21,14 +21,14 @@ import { DepartamentosService } from '../../services/departamentos.service';
 export class ProfesorComponent{
 
   public profesor:Profesor = {
-    id:null,
-    name:"",
+    nombre:"",
     apellido:"",
-    rut:null,
+    rut:""
   }
 
+
   public dias:any[]=[0,1,2,3,4,5];
-  public periodos:any[]=[0,1,2,3,4,5,6,7,8];
+  public periodos:any[]=[0,1,2,3,4,5,6,7];
   public matrizHorario: any[] = [[false, false, false, false, false, false],
                 							   [false, false, false, false, false, false],
                 							   [false, false, false, false, false, false],
@@ -39,7 +39,6 @@ export class ProfesorComponent{
                 							   [false, false, false, false, false, false],
                 							   [false, false, false, false, false, false]];
 
-  public departamentos:any[] = [];
 
   formas:FormGroup;
   nuevo:boolean = false;
@@ -64,7 +63,6 @@ export class ProfesorComponent{
                                   ] ),
     })
 
-
     this.activatedRoute.params
         .subscribe( parametros=>{
           this.id = parametros['id']
@@ -72,6 +70,7 @@ export class ProfesorComponent{
             //OBTIENE LOS DATOS DEL PROFESOR
             this._profesoresService.getProfesor( this.id )
                   .subscribe( profesor => this.profesor = profesor)
+                  console.log(this.profesor);
           }
 
         } );
@@ -116,37 +115,23 @@ export class ProfesorComponent{
     }
   }
 
-
-  guardar( forma:any ){
-    console.log(forma);
+  guardar(){
     if(this.id == "nuevo"){
       //insertando
       this._profesoresService.nuevoProfesor( this.profesor )
             .subscribe( data=>{
-              this.router.navigate(['/profesor',data.name])
+              this.router.navigate(['/profesor',data])
             },
           error=> console.error(error));
     }else{
       //actualizando
+      console.log(this.profesor);
       this._profesoresService.actualizarProfesor( this.profesor, this.id )
             .subscribe( data=>{
             },
           error=> console.error(error));
     }
   }
-
-  // passwordIguales( control: FormControl ): any {
-  //   let formas:any = this;
-  //   if( control.value === formas.controls['password1'].value ){
-  //     console.log("iguales")
-  //     return{
-  //       passwordiguales:true
-  //     }
-  //   }else{
-  //     console.log("NO iguales")
-  //     return null;
-  //   }
-  // }
 
   agregarNuevo( forma:NgForm ){
     this.router.navigate(['/profesor','nuevo']);
