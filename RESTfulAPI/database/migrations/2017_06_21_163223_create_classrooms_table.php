@@ -18,8 +18,6 @@ class CreateClassroomsTable extends Migration {
 
 			$table->string('nombre',255);
 
-            $table->integer('depa_id')->unsigned();
-            $table->foreign('depa_id')->references('id')->on('departaments');
 
 			$table->timestamps();
 		});

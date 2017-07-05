@@ -11,7 +11,18 @@ class Schedule extends Model {
      *
      * @var array
      */
-    protected $fillable = ['dia', 'bloque','id','course_2_id','class_id'];
+    protected $fillable = ['dia',
+                            'periodo_1',
+                            'periodo_2',
+                            'periodo_3',
+                            'periodo_4',
+                            'periodo_5',
+                            'periodo_6',
+                            'periodo_7',
+                            'periodo_8',
+                            'id',
+                            'course_2_id',
+                            'class_id'];
 
     /**
      * The attributes excluded from the model's JSON form.

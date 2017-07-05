@@ -22,8 +22,13 @@ class Teacher extends Model {
 
     public function course()
     {
-        return $this->belongsToMany('App\Course','disponibilities','teacher_1_id','course_1_id')
-            ->withPivot('dia', 'bloque');
+        return $this->belongsToMany('App\Course','sections','teacher_1_id','course_1_id')
+            ->withPivot('nombre');
+    }
+
+    public function disponibility()
+    {
+        return $this->hasMany('App\Disponibility','teacher_id');
     }
 
 

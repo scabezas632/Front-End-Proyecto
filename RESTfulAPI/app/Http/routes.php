@@ -31,38 +31,37 @@ Route::get('/', [
     'as' => 'home'
 ]);
 
-//Profesores
-Route::resource('profesores','TeacherController');
+//Profesores (lista)
+Route::resource('profesores','TeacherController',['only'=>['index','show']]);
 
-//Cursos
-Route::resource('cursos','CursoController',['only'=>['index','show','store','update','destroy']]);
+//Cursos (lista)
+Route::resource('cursos','CursoController',['only'=>['index','show']]);
 
-//Departamentos
-Route::resource('departamentos','DepartamentoController',['only'=>['index','show','store','update']]);
+//Salas (lista)
+Route::resource('salas','SalaController',['only'=>['index','show']]);
 
-//Salas
-Route::resource('salas','SalaController',['only'=>['index','show','store','update']]);
+//Disponibilidad(lista)
+Route::resource('disponibilidades','DispoController',['only'=>['index','show']]);
 
-//Departamento&Salas
-Route::resource('departamentos.salas','DepartamentoSalaController',['exept'=>['show']]);
+//profe y disponibilidad (listo)
+Route::resource('profesor.disponibilidad','ProfeDispoController',['exept'=>['show']]);
 
 //------------------------------------------------------------------------
-//Disponibilidad
-Route::resource('profesores.disponibilidad.cursos','DisponibilidadController',['exept'=>['show']]);
+//Seccion Mostrar (listo)
+Route::resource('secciones','SeccionesController',['only'=>['index']]);
 
-//Disponibilidad mostrar
-Route::resource('disponibilidades','DispoController',['only'=>['index']]);
+//Secciones prof-curso (listo)
+Route::resource('profesores.seccion.cursos','SeccionController',['only'=>['index']]);
 
-//Disponibilidad CREAR
-Route::resource('profesor.curso.disponible','DisponibilidadController',['only'=>['store']]);
 //------------------------------------------------------------------
-//Horarios
-Route::resource('cursos.horario.salas','HorarioController',['exept'=>['show']]);
 
-//Horarios mostrar
+//Horarios mostrar (listo)
 Route::resource('horarios','HorariosController',['only'=>['index']]);
 
-//Horarios CREAR
+//Horario(listo)
+Route::resource('cursos.horario.salas','HorarioController',['only'=>['index','update','destroy']]);
+
+//Horarios CREAR(listo)
 Route::resource('curso.sala.horario','HorarioController',['only'=>['store']]);
 
 

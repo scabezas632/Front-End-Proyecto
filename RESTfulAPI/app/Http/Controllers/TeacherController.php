@@ -38,42 +38,7 @@ class TeacherController extends Controller {
 	 */
 	public function store(Request $request)
 	{
-        if(!$request->get('nombre'))
-        {
-            return response()->json(['mensaje'=>'datos invalidos o incompletos','codigo'=>'422'],422);
-        }
-        if(!$request->get('apellido'))
-        {
-            return response()->json(['mensaje'=>'datos invalidos o incompletos','codigo'=>'422'],422);
-        }
-        if(!$request->get('email'))
-        {
-            return response()->json(['mensaje'=>'datos invalidos o incompletos','codigo'=>'422'],422);
-        }
-        if(!$request->get('password'))
-        {
-            return response()->json(['mensaje'=>'datos invalidos o incompletos','codigo'=>'422'],422);
-        }
-        if(!$request->get('rut'))
-        {
-            return response()->json(['mensaje'=>'datos invalidos o incompletos','codigo'=>'422'],422);
-        }
-        if(!$request->get('departamento'))
-        {
-            return response()->json(['mensaje'=>'datos invalidos o incompletos','codigo'=>'422'],422);
-        }
-        if(!$request->get('jerarquia'))
-        {
-            return response()->json(['mensaje'=>'datos invalidos o incompletos','codigo'=>'422'],422);
-        }
-        if(!$request->get('contrato'))
-        {
-            return response()->json(['mensaje'=>'datos invalidos o incompletos','codigo'=>'422'],422);
-        }
 
-
-        Teacher::create($request->all());
-        return response()->json(['mensaje'=>'usuario ha sido creado'],202);
 	}
 
 	/**
@@ -119,7 +84,7 @@ class TeacherController extends Controller {
             //1
             $nombre=$request->get('nombre');
             if ($nombre!=null && $nombre!=""){
-                $profesor->nombre=$nombre;
+                $profesor->name=$nombre;
             }
             //2
             $apellido=$request->get('apellido');
@@ -166,7 +131,6 @@ class TeacherController extends Controller {
         $nombre=$request->get('nombre');
         if (!$nombre){
             return response()->json(['mensaje'=>'datos invalidos'],404);
-
         }
         //2
         $apellido=$request->get('apellido');

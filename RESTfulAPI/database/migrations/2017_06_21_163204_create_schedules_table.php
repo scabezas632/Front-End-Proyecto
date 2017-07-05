@@ -17,8 +17,17 @@ class CreateSchedulesTable extends Migration {
 			$table->increments('id');
 
             $table->tinyInteger('dia');
-            $table->tinyInteger('bloque');
 
+            $table->tinyInteger('periodo_1')->nullable();
+            $table->tinyInteger('periodo_2')->nullable();
+            $table->tinyInteger('periodo_3')->nullable();
+            $table->tinyInteger('periodo_4')->nullable();
+            $table->tinyInteger('periodo_5')->nullable();
+            $table->tinyInteger('periodo_6')->nullable();
+            $table->tinyInteger('periodo_7')->nullable();
+            $table->tinyInteger('periodo_8')->nullable();
+
+            //Relacion curso-salas
             $table->integer('course_2_id')->unsigned();
             $table->foreign('course_2_id')->references('id')->on('courses');
 

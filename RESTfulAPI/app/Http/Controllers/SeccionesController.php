@@ -1,12 +1,13 @@
 <?php namespace App\Http\Controllers;
 
-use App\Disponibility;
+use App\Departament;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Section;
 use Illuminate\Http\Request;
 
-class DispoController extends Controller {
+class SeccionesController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -15,11 +16,11 @@ class DispoController extends Controller {
 	 */
 	public function index()
 	{
-        $horarios = Disponibility::all();
-        if(!$horarios){
+	    $secciones = Section::all();
+        if(!$secciones){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
         }
-        return response()->json(['datos'=>$horarios],202);
+        return response()->json(['datos'=>$secciones],202);
 	}
 
 	/**
@@ -29,17 +30,17 @@ class DispoController extends Controller {
 	 */
 	public function create()
 	{
-		//
-	}
+
+    }
 
 	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
-		//
+
 	}
 
 	/**
@@ -50,11 +51,11 @@ class DispoController extends Controller {
 	 */
 	public function show($id)
 	{
-        $horario = Disponibility::find($id);
-        if(!$horario){
+        $departamento = Departament::find($id);
+        if(!$departamento){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
         }
-        return response()->json(['datos'=>$horario],202);
+        return response()->json(['datos'=>$departamento],202);
 	}
 
 	/**
@@ -77,7 +78,8 @@ class DispoController extends Controller {
 	public function update($id)
 	{
 		//
-	}
+
+    }
 
 	/**
 	 * Remove the specified resource from storage.
@@ -87,7 +89,7 @@ class DispoController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
-	}
+        //
+    }
 
 }

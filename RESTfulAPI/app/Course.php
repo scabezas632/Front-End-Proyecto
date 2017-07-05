@@ -23,13 +23,23 @@ class Course extends Model {
 
     public function teacher()
     {
-        return $this->belongsToMany('App\Teacher','disponibilities','teacher_1_id','course_1_id');
+        return $this->belongsToMany('App\Teacher','sections','teacher_1_id','course_1_id')
+            ->withPivot('nombre');
     }
 
     public function classrooms()
     {
         return $this->belongsToMany('App\Classroom','schedules','course_2_id','class_id')
-            ->withPivot('dia', 'bloque');
+            ->withPivot('dia',
+                        'periodo_1',
+                        'periodo_2',
+                        'periodo_3',
+                        'periodo_4',
+                        'periodo_5',
+                        'periodo_6',
+                        'periodo_7',
+                        'periodo_8'
+            );
     }
 
 
