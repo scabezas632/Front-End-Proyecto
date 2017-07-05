@@ -22,19 +22,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name','apellido', 'email', 'password','rut','departamento','jerarquia','contrato'];
+	protected $fillable = ['nombre','apellido', 'email', 'password'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
 	 * @var array
 	 */
-	protected $hidden = ['password', 'remember_token','created_at','updated_at'];
+	protected $hidden = ['password','created_at','updated_at'];
 
-    public function course()
-    {
-        return $this->belongsToMany('App\Course','disponibilities','teacher_1_id','course_1_id')
-            ->withPivot('dia', 'bloque');
-    }
 
 }

@@ -10,7 +10,10 @@ use App\Classroom;
 use Illuminate\Http\Request;
 
 class HorarioController extends Controller {
-
+    public function __construct()
+    {
+        $this->middleware('auth.basic');
+    }
     /**
      * Display a listing of the resource.
      *

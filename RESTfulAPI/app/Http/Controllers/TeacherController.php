@@ -10,7 +10,12 @@ use phpDocumentor\Reflection\Types\Null_;
 
 class TeacherController extends Controller {
 
-	/**
+    public function __construct()
+    {
+        $this->middleware('auth.basic');
+    }
+
+    /**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response

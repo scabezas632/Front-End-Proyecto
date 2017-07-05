@@ -11,30 +11,19 @@ class UserTableSeeder extends Seeder {
     {
 
         $faker = Faker::create();
-        for ($i=0 ; $i<18 ; $i++) {
             $id = \DB::table('users')->insertGetId(array(
 
-                'name'          => $faker->firstName,
+                'nombre'        => 'admin',
 
                 'apellido'      => $faker->lastName,
 
-                'email'         => $faker->unique()->email,
+                'email'         => 'api@utem.cl',
 
-                'password'      => \Hash::make('123456'),
-
-                'rut'           => $faker->unique()->phoneNumber,
-
-                'departamento'  => 'informatica',
-
-                'jerarquia'  => 'docente',
-
-                'contrato'=>'vigente'
+                'password'      => \Hash::make('secret')
 
 
 
             ));
-
-        }
     }
 
 }
