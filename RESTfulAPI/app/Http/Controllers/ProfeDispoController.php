@@ -83,10 +83,21 @@ class ProfeDispoController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
-		//
-	}
+   public function show($idprof,$idDispo)
+ 	{
+         $prof = Teacher::find($idprof);
+         if(!$prof){
+             return response()->json(['Mensaje'=>'No se encontro registro profesor','codigo'=> 404],404);
+         }
+
+         $dispo = $prof->disponibility()->find($idDispo);
+
+         if(!$dispo){
+             return response()->json(['Mensaje'=>'No se encontro registro disponibilidad','codigo'=> 404],404);
+         }
+
+         return response()->json(['datos'=>$dispo],202);
+ 	}
 
 	/**
 	 * Show the form for editing the specified resource.

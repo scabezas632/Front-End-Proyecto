@@ -9,16 +9,19 @@
 
     <div class="row animated fadeIn fast">
       <div class="col-md-12">
-        <button [routerLink]="['/profesor','nuevo']"
+        <!-- <button [routerLink]="['/profesor','nuevo']"
                 class="btn btn-outline-primary margin-30-bottom"
                 class="btn btn-outline-success margin-30-bottom"
                 type="button" name="button">
           Nuevo Profesor
-        </button>
+        </button> -->
 
+        <div class="form-group pull-right">
+            <input type="text" class="search form-control" placeholder="¿A quién buscas?">
+        </div>
+        <span class="counter pull-right"></span>
         <div class="table-responsive">
-
-          <table class="table">
+          <table class="table results">
             <thead class="thead-inverse">
               <tr>
                 <th class="w-5 text-center">#</th>

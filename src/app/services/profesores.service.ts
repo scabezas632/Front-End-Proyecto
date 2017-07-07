@@ -21,7 +21,7 @@ export class ProfesoresService {
 
     return this.http.post( this.profesoresUrl, body, { headers } )
         .map( res=>{
-          console.log(res.json().datos);
+          // console.log(res.json().datos);
            res.json().datos;
         })
   }
@@ -37,7 +37,7 @@ export class ProfesoresService {
 
     return this.http.put( url, body, { headers } )
         .map( res=>{
-          console.log(res.json().datos);
+          // console.log(res.json().datos);
           return res.json().datos;
         })
   }
@@ -49,12 +49,9 @@ export class ProfesoresService {
   }
 
   getProfesores(){
-
-    // return this.http.get( this.profesoresUrl )
-    //     .map( res=>res.json() );
     return this.http.get( this.profesoresUrl )
         .map( res=>{
-          console.log(res.json().datos);
+          // console.log(res.json().datos);
           return res.json().datos;
         })
   }

@@ -22,7 +22,7 @@ import { SalaComponent } from './components/salas/sala.component';
 //SERVICIOS
 import { ProfesoresService } from './services/profesores.service';
 import { SalasService } from './services/salas.service';
-import { DepartamentosService } from './services/departamentos.service';
+import { DisponibilidadService } from './services/disponibilidad.service';
 
 //PIPES
 import { KeysPipe } from './pipes/keys.pipe';
@@ -47,7 +47,7 @@ import { KeysPipe } from './pipes/keys.pipe';
   providers: [
     ProfesoresService,
     SalasService,
-    DepartamentosService
+    DisponibilidadService
   ],
   bootstrap: [AppComponent]
 })
