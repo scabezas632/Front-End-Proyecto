@@ -8,6 +8,7 @@ import { ProfesoresService } from '../../services/profesores.service';
 import { DisponibilidadService } from '../../services/disponibilidad.service';
 
 
+
 @Component({
   selector: 'app-profesor',
   templateUrl: './profesor.component.html',
@@ -53,20 +54,32 @@ export class ProfesorComponent{
 
   //Periodos a usar
   public periodos:any[]=[0,1,2,3,4,5,6,7];
-  public matrizHorario: any[] = [[0, 0, 0, 0, 0, 0],
-                							   [0, 0, 0, 0, 0, 0],
-                							   [0, 0, 0, 0, 0, 0],
-                							   [0, 0, 0, 0, 0, 0],
-                							   [0, 0, 0, 0, 0, 3],
-                							   [0, 0, 0, 0, 0, 3],
-                							   [0, 0, 0, 0, 0, 3],
-                							   [0, 0, 0, 0, 0, 3]];
+
+  // ESTADOS DE LA MATRIZ
+  // 1 = Disponible para ser usado
+  // 2 = No disponible para ser usado
+  // 3 = Deshabilitado
+  public matrizHorario: any[] = [[1, 1, 1, 1, 1, 1],
+                							   [1, 1, 1, 1, 1, 1],
+                							   [1, 1, 1, 1, 1, 1],
+                							   [1, 1, 1, 1, 1, 1],
+                							   [1, 1, 1, 1, 1, 3],
+                							   [1, 1, 1, 1, 1, 3],
+                							   [1, 1, 1, 1, 1, 3],
+                							   [1, 1, 1, 1, 1, 3]];
 
 
   formas:FormGroup;
 
   //Para que la disponibilidad se carge una sola vez
   interruptor:boolean = false;
+
+  //Para que siempre carge primero la disponibilidad
+  enabled:boolean = false;
+
+  //Para saber si se efectúo correctamente la actualización
+  actualizado:boolean = false;
+  errorActualizado:boolean = false;
 
   //ID del profesor
   id:string = "";
@@ -117,63 +130,58 @@ export class ProfesorComponent{
     let fila = +dato[0];
     let columna = +dato[1];
 
-
     // console.log("bloques["+columna+"]["+fila+"]: "+this.matrizHorario[columna][fila]);
-
     return this.matrizHorario[columna][fila];
   }
 
   changeEstadoBloque(coordenada){
-    let dato = coordenada.split("-");
-    let fila = +dato[0];
-    let columna = +dato[1];
+    if(this.enabled){
+      let dato = coordenada.split("-");
+      let fila = +dato[0];
+      let columna = +dato[1];
 
-    if(fila==5 && columna>=4){
-      this.matrizHorario[columna][fila]=this.matrizHorario[columna][fila];
-    }else{
-      //CON NUMEROS
-      if(this.matrizHorario[columna][fila]==0){
-        this.matrizHorario[columna][fila]=1;
+      if(fila==5 && columna>=4){
+        this.matrizHorario[columna][fila]=this.matrizHorario[columna][fila];
       }else{
-        this.matrizHorario[columna][fila]=0;
+        //CON NUMEROS
+        if(this.matrizHorario[columna][fila]==1){
+          this.matrizHorario[columna][fila]=2;
+        }
+        else{
+          this.matrizHorario[columna][fila]=1;
+        }
+        //CON BOOLEANOS
+        // this.matrizHorario[columna][fila]=!this.matrizHorario[columna][fila];
       }
-      //CON BOOLEANOS
-      // this.matrizHorario[columna][fila]=!this.matrizHorario[columna][fila];
-    }
 
-    //SI SE CAMBIO UN DIA DISPONIBLE, LO BORRA
-    let index = this.diasDisponibles.indexOf(fila);
-    let contador = 0;
-    for(let i in this.periodos){
-        contador+=this.matrizHorario[i][fila];
-    }
+      //SI SE CAMBIO UN DIA DISPONIBLE, LO BORRA
+      let index = this.diasDisponibles.indexOf(fila);
+      let contador = 0;
+      for(let i in this.periodos){
+          contador+=this.matrizHorario[i][fila];
+      }
 
-    if(index==-1){
-      //0 de lunes a Viernes y 12 el Sábado
-      if(contador==0 || contador==12){
-        this.diasDisponibles.push(fila);
+      if(index==-1){
+        //0 de lunes a Viernes y 12 el Sábado
+        if(contador==0 || contador==12){
+          this.diasDisponibles.push(fila);
+          contador=0;
+        }
+      }else{
+        this.diasDisponibles.splice(index,1);
         contador=0;
       }
-    }else{
-      this.diasDisponibles.splice(index,1);
-      contador=0;
     }
-
-    // if(validador==true){
-    //   this.reiniciarArreglo();
-    // }
-
-
-  }
+}
 
   completarDia(dia, llenar){
     for(let i in this.periodos){
       if(llenar==true){
-        if(this.getEstadoBloque( dia+"-"+i )==0){
+        if(this.getEstadoBloque( dia+"-"+i )==1){
           this.changeEstadoBloque( dia+"-"+i );
         }
       }else{
-        if(this.getEstadoBloque( dia+"-"+i )==1){
+        if(this.getEstadoBloque( dia+"-"+i )==2){
           this.changeEstadoBloque( dia+"-"+i );
         }
       }
@@ -181,6 +189,8 @@ export class ProfesorComponent{
   }
 
   guardar(key:any){
+    this.cambiarVariableAlerta()
+
     //Si hay dias nuevos, añadirlos
     if(this.diasCreate.length>0){
       //AÑADE AL ARREGLO LOS DIAS QUE FALTAN
@@ -211,8 +221,12 @@ export class ProfesorComponent{
 
         this._disponibilidadService.nuevaDisponibilidad( this.arregloDisponibilidad[idArreglo], this.id )
               .subscribe( data=>{
+                this.actualizado = true;
               },
-            error=> console.error(error));
+            error=> {
+              console.error(error)
+              this.errorActualizado = true;
+            });
       }
     }
     //SI HABIAN DE ANTES, ACTUALIZARLOS
@@ -230,34 +244,34 @@ export class ProfesorComponent{
         //PARTE QUE NO FUNCIONA
         // console.log("DIA: "+this.arregloDisponibilidad[idArreglo].dia);
 
-        this.arregloDisponibilidad[idArreglo].dia = this.arregloDisponibilidad[idArreglo].dia.toString();
-        this.arregloDisponibilidad[idArreglo].periodo_2 = this.matrizHorario[1][this.diasUpdate[idArreglo]].toString();
-        this.arregloDisponibilidad[idArreglo].periodo_3 = this.matrizHorario[2][this.diasUpdate[idArreglo]].toString();
-        this.arregloDisponibilidad[idArreglo].periodo_4 = this.matrizHorario[3][this.diasUpdate[idArreglo]].toString();
-        this.arregloDisponibilidad[idArreglo].periodo_5 = this.matrizHorario[4][this.diasUpdate[idArreglo]].toString();
-        this.arregloDisponibilidad[idArreglo].periodo_6 = this.matrizHorario[5][this.diasUpdate[idArreglo]].toString();
-        this.arregloDisponibilidad[idArreglo].periodo_7 = this.matrizHorario[6][this.diasUpdate[idArreglo]].toString();
-        this.arregloDisponibilidad[idArreglo].periodo_8 = this.matrizHorario[7][this.diasUpdate[idArreglo]].toString();
+        this.arregloDisponibilidad[idArreglo].periodo_1 = this.matrizHorario[0][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_2 = this.matrizHorario[1][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_3 = this.matrizHorario[2][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_4 = this.matrizHorario[3][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_5 = this.matrizHorario[4][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_6 = this.matrizHorario[5][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_7 = this.matrizHorario[6][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_8 = this.matrizHorario[7][this.diasUpdate[idArreglo]];
 
         let idDisponibilidad = this.arregloDisponibilidad[idArreglo].id;
 
-        console.log(this.arregloDisponibilidad[idArreglo]);
-
-        let myJSON = JSON.stringify(this.arregloDisponibilidad[idArreglo]);
-        console.log(myJSON);
-
         this._disponibilidadService.actualizarDisponibilidad( this.arregloDisponibilidad[idArreglo], this.id,  idDisponibilidad )
               .subscribe( data=>{
-                console.log(idDisponibilidad+" ACTUALIZADO");
+                // console.log(idDisponibilidad+" ACTUALIZADO");
+                this.actualizado = true;
               },
-            error=> console.error(error));
+            error=> {
+              console.error(error)
+              this.errorActualizado = true;
+            });
 
       }
     }
   }
 
-  cargarDisponibilidad(){
+  mostrarDisponibilidad(){
     if(this.interruptor==false){
+      this.enabled=true;
 
       //CONVERTIR DE JSON A ARRAY
       for(let i in this.disponibilidad){
@@ -297,4 +311,11 @@ export class ProfesorComponent{
       this.interruptor=true;
     }
   }
+
+  cambiarVariableAlerta(){
+    this.actualizado = false;
+    this.errorActualizado = false;
+  }
+
+
 }

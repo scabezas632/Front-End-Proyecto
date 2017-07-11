@@ -11,5 +11,4 @@ export interface Disponibilidad{
   periodo_7:number;
   periodo_8:number;
   teacher_id:number;
-
 }

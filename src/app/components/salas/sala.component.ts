@@ -15,22 +15,23 @@ export class SalaComponent implements OnInit {
     nombre:null
   }
 
+  //Dias en total
   public dias:any[]=[0,1,2,3,4,5];
-  public periodos:any[]=[0,1,2,3,4,5,6,7,8];
-  public matrizHorario: any[] = [[false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false]];
 
-  public departamentos:any[] = [];
+  //Periodos a usar
+  public periodos:any[]=[0,1,2,3,4,5,6,7];
 
-  nuevo:boolean = false;
-  id:string = "";
+  public matrizHorario: any[] = [[0, 0, 0, 0, 0, 0],
+                							   [0, 0, 0, 0, 0, 0],
+                							   [0, 0, 0, 0, 0, 0],
+                							   [0, 0, 0, 0, 0, 0],
+                							   [0, 0, 0, 0, 0, 3],
+                							   [0, 0, 0, 0, 0, 3],
+                							   [0, 0, 0, 0, 0, 3],
+                							   [0, 0, 0, 0, 0, 3]];
+
+ //ID del profesor
+ id:string = "";
 
   constructor(  private _salasService:SalasService,
                 private router:Router,
@@ -42,12 +43,13 @@ export class SalaComponent implements OnInit {
           this.id = parametros['id']
           if(this.id !=="nueva" ){
             this._salasService.getSala( this.id )
-                  .subscribe( profesor => this.sala = profesor)
+                  .subscribe( sala => this.sala = sala)
           }
         } );
   }
 
   ngOnInit() {
+    console.log(this.sala[0].pivot)
   }
 
   //Funciones de horario
@@ -55,6 +57,7 @@ export class SalaComponent implements OnInit {
     let dato = coordenada.split("-");
     let fila = +dato[0];
     let columna = +dato[1];
+
 
     // console.log("bloques["+columna+"]["+fila+"]: "+this.matrizHorario[columna][fila]);
 
@@ -71,49 +74,6 @@ export class SalaComponent implements OnInit {
     }else{
       this.matrizHorario[columna][fila]=!this.matrizHorario[columna][fila];
     }
-  }
-
-  completarDia(dia, llenar){
-
-    for(let i=0;i<=8;i++){
-      if(llenar==true){
-        if(this.getEstadoBloque( dia+"-"+i )==false){
-          this.changeEstadoBloque( dia+"-"+i );
-        }
-      }else{
-        if(this.getEstadoBloque( dia+"-"+i )==true){
-          this.changeEstadoBloque( dia+"-"+i );
-        }
-      }
-    }
-  }
-
-
-  guardar(){
-    console.log(this.sala);
-
-    if(this.id == "nueva"){
-      //insertando
-      this._salasService.nuevaSala( this.sala )
-            .subscribe( data=>{
-              this.router.navigate(['/sala',data.name])
-            },
-          error=> console.error(error));
-    }else{
-      //actualizando
-      this._salasService.actualizarSala( this.sala, this.id )
-            .subscribe( data=>{
-              console.log(data);
-            },
-          error=> console.error(error));
-    }
-  }
-
-  agregarNuevo( forma:NgForm ){
-    this.router.navigate(['/sala','nueva']);
-
-    forma.reset();
-
   }
 
 }

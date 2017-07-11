@@ -23,16 +23,4 @@ export class SalasComponent implements OnInit {
   ngOnInit() {
   }
 
-  borrarSala( key$:string ){
-    this._salasServices.borrarSala( key$ )
-        .subscribe( respuesta=>{
-          if( respuesta ){
-            console.error(respuesta);
-          }else{
-            //todo bien
-            delete this.salas[key$];
-          }
-        } )
-  }
-
 }

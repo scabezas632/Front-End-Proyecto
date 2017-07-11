@@ -6,59 +6,27 @@ import 'rxjs/Rx'
 @Injectable()
 export class SalasService {
 
+  salasUrl:string = "http://localhost:8000/salas";
+
+  salaPruebaURL:string = "http://localhost:8000/cursos/1/horario/2/salas";
+
   constructor( private http:Http ) { }
 
-  salasUrl:string = "https://paralela-2fcd6.firebaseio.com/Salas.json";
-  salaUrl:string = "https://paralela-2fcd6.firebaseio.com/Salas/";
-
-  nuevaSala( sala:Sala ){
-
-    let body = JSON.stringify( sala );
-    let headers = new Headers({
-      'Content-Type':'application/json'
-    });
-
-    return this.http.post( this.salasUrl, body, { headers } )
-        .map( res=>{
-          console.log(res.json());
-          return res.json();
-        })
-  }
-
-  actualizarSala( sala:Sala, key$:string ){
-
-    let body = JSON.stringify( sala );
-    let headers = new Headers({
-      'Content-Type':'application/json'
-    });
-
-    let url = `${ this.salaUrl }/${ key$ }.json`;
-
-    return this.http.put( url, body, { headers } )
-        .map( res=>{
-          console.log(res.json());
-          return res.json();
-        })
-  }
-
   getSala( key$:string ){
-    let url = `${ this.salaUrl }/${ key$ }.json`;
-    return this.http.get( url )
-        .map( res=>res.json() );
+    let url = `${ this.salasUrl }/${ key$ }`;
+    return this.http.get( this.salaPruebaURL )
+        .map( res=>{
+            console.log(res.json().datos);
+            return res.json().datos;
+        });
   }
 
   getSalas(){
-
     return this.http.get( this.salasUrl )
-        .map( res=>res.json() );
-  }
-
-  borrarSala( key$:string ){
-
-    let url = `${ this.salaUrl }/${ key$ }.json`;
-    return this.http.delete( url )
-          .map( res=> res.json() )
-
+        .map( res=>{
+          // console.log(res.json().datos);
+          return res.json().datos;
+        })
   }
 
 

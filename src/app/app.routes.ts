@@ -6,12 +6,12 @@ import { ProfesorComponent } from './components/profesores/profesor.component';
 import { SalasComponent } from './components/salas/salas.component';
 import { SalaComponent } from './components/salas/sala.component';
 
-
-
 const APP_ROUTES: Routes = [
   { path: 'profesores', component: ProfesoresComponent },
   { path: 'profesor/:id', component: ProfesorComponent },
-  { path: 'salas', component: SalasComponent },
+  {
+    path: 'salas',
+    component: SalasComponent   },
   { path: 'sala/:id', component: SalaComponent },
   { path: '', pathMatch: 'full', redirectTo: '' }
 ];

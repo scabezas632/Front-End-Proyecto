@@ -25,14 +25,10 @@
                 <td class="text-center">{{ i + 1 }}</td>
                 <td class="text-center">{{ salas[k].nombre }}</td>
                 <td class="text-center">
-                  <button [routerLink]="['/sala', k]"
+                  <button [routerLink]="['/sala', salas[k].id]"
                           type="button" class="btn btn-outline-primary">
                     Ver Horario
                   </button>
-                  <!-- <button (click)="borrarSala(k)"
-                          type="button" class="btn btn-outline-danger">
-                    Eliminar
-                  </button> -->
                 </td>
               </tr>
             </tbody>

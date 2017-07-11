@@ -19,7 +19,7 @@ class CursoController extends Controller {
 	public function index()
 	{
 
-        return response()->json([Course::all()],202);
+        return response()->json(['datos'=>Course::all()],202);
 	}
 
 	/**

@@ -18,19 +18,38 @@
                 <div class="card-block">
                   <div class="form-group">
                     <!-- [disabled]="!formas.valid" -->
-                    <button (click)="cargarDisponibilidad()"
+                    <div class="alert alert-success alert-dismissible fade show animated fadeIn fast"
+                          role="alert"
+                          *ngIf="actualizado">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cambiarVariableAlerta()">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <strong>¡Actualizado!</strong> La disponibilidad del profesor ha sido actualizada correctamente.
+                    </div>
+
+                    <div class="alert alert-danger alert-dismissible fade show animated fadeIn fast"
+                          role="alert"
+                          *ngIf="errorActualizado">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cambiarVariableAlerta()">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <strong>¡Error!</strong> Ha ocurrido un error al intentar actualizar la disponibilidad.
+                    </div>
+                    <button (click)="mostrarDisponibilidad()"
                             type="button"
-                            class="btn btn-success">
-                      Cargar Disponibilidad
+                            class="btn btn-success"
+                            *ngIf="!enabled">
+                      Mostrar Disponibilidad
                     </button>
                     <button
                             type="submit"
-                            class="btn btn-outline-primary">
+                            class="btn btn-success"
+                            *ngIf="enabled">
                       Guardar
                     </button>
                     <button [routerLink]="'/profesores'"
                             type="button"
-                            class="btn btn-outline-danger">
+                            class="btn btn-danger">
                       Regresar
                     </button>
                   </div>
@@ -51,39 +70,44 @@
             							<td class="text-center">{{periodo+1}}</td>
 
                           <td [attr.id]="'0-' + periodo"
-                              [ngClass]="{'marcado': (getEstadoBloque('0-' + periodo)==1),
-                                          'noMarcado': (getEstadoBloque('0-' + periodo)==0)}"
+                              [ngClass]="{'marcado': (getEstadoBloque('0-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('0-' + periodo)==1),
+                                          'disabled': (!enabled)}"
                               (click)="changeEstadoBloque('0-' + periodo)">
                           </td>
 
                           <td [attr.id]="'1-' + periodo"
-                              [ngClass]="{'marcado': (getEstadoBloque('1-' + periodo)==1),
-                                          'noMarcado': (getEstadoBloque('1-' + periodo)==0)}"
+                              [ngClass]="{'marcado': (getEstadoBloque('1-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('1-' + periodo)==1),
+                                          'disabled': (!enabled)}"
                               (click)="changeEstadoBloque('1-' + periodo)">
                           </td>
 
                           <td [attr.id]="'2-' + periodo"
-                              [ngClass]="{'marcado': (getEstadoBloque('2-' + periodo)==1),
-                                          'noMarcado': (getEstadoBloque('2-' + periodo)==0)}"
+                              [ngClass]="{'marcado': (getEstadoBloque('2-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('2-' + periodo)==1),
+                                          'disabled': (!enabled)}"
                               (click)="changeEstadoBloque('2-' + periodo)">
                           </td>
 
                           <td [attr.id]="'3-' + periodo"
-                              [ngClass]="{'marcado': (getEstadoBloque('3-' + periodo)==1),
-                                          'noMarcado': (getEstadoBloque('3-' + periodo)==0)}"
+                              [ngClass]="{'marcado': (getEstadoBloque('3-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('3-' + periodo)==1),
+                                          'disabled': (!enabled)}"
                               (click)="changeEstadoBloque('3-' + periodo)">
                           </td>
 
                           <td [attr.id]="'4-' + periodo"
-                              [ngClass]="{'marcado': (getEstadoBloque('4-' + periodo)==1),
-                                          'noMarcado': (getEstadoBloque('4-' + periodo)==0)}"
+                              [ngClass]="{'marcado': (getEstadoBloque('4-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('4-' + periodo)==1),
+                                          'disabled': (!enabled)}"
                               (click)="changeEstadoBloque('4-' + periodo)">
                           </td>
 
                           <td [attr.id]="'5-' + periodo"
-                              [ngClass]="{'marcado': (getEstadoBloque('5-' + periodo)==1),
-                                          'noMarcado': (getEstadoBloque('5-' + periodo)==0),
-                                          'disabled': (getEstadoBloque('5-' + periodo)==3)}"
+                              [ngClass]="{'marcado': (getEstadoBloque('5-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('5-' + periodo)==1),
+                                          'disabled': (getEstadoBloque('5-' + periodo)==3) || !enabled}"
                               (click)="changeEstadoBloque('5-' + periodo)">
                           </td>
 

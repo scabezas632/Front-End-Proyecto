@@ -4,12 +4,10 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html'
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent{
 
-  constructor() { }
+  constructor( ) { }
 
-  ngOnInit() {
-  }
 
   ConfirmaGenerar() {
     let mensaje = confirm("¿Está seguro que desea generar un nuevo horario?\n Esto podría tomar unos minutos");

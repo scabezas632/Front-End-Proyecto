@@ -20,6 +20,8 @@ export class DisponibilidadService {
     let headers = new Headers({
       'Content-Type':'application/json'
     });
+    console.log(body);
+
 
     return this.http.post( url, body, { headers } )
         .map( res=>{
@@ -36,17 +38,15 @@ export class DisponibilidadService {
     });
 
     let url = `${ this.disponibilidadUrl }/${ idProfesor$ }/disponibilidad/${ idDisponibilidad$ }`;
-    console.log("URL: "+url);
 
     return this.http.put( url, body, { headers } )
         .map( res=>{
-          // console.log(res.json().datos);
           return res.json().datos;
         })
   }
 
-  getDisponibilidades( key$:string ){
-    let url = `${ this.disponibilidadUrl }/${ key$ }/disponibilidad`;
+  getDisponibilidades( idProfesor$:string ){
+    let url = `${ this.disponibilidadUrl }/${ idProfesor$ }/disponibilidad`;
 
     return this.http.get( url )
         .map( res=>{
@@ -54,6 +54,5 @@ export class DisponibilidadService {
           return res.json().datos;
         })
   }
-
 
 }

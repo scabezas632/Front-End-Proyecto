@@ -49,6 +49,10 @@ export class ProfesoresService {
   }
 
   getProfesores(){
+
+    let headers = new Headers();
+    headers.append( 'Authorization', 'Basic YXBpQHV0ZW0uY2w6c2VjcmVldA==' );
+
     return this.http.get( this.profesoresUrl )
         .map( res=>{
           // console.log(res.json().datos);
