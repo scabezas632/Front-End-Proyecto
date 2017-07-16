@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class HorarioController extends Controller {
     public function __construct()
     {
-        $this->middleware('auth.basic');
+        $this->middleware('cors');
     }
     /**
      * Display a listing of the resource.
@@ -21,6 +21,13 @@ class HorarioController extends Controller {
      */
     public function index($idCurso)
     {
+        try {
+            if(!$email = \JWTAuth::parseToken()->toUser()){
+                return response()->json(['user not found', 404]);
+            }
+        } catch (Exception $e){
+            return Response::json(['error'=> $e->getMessage(), HttpResponse::HTTP_UNAUTHORIZED]);
+        }
 
         $cursos = Course::find($idCurso);
         if(!$cursos){
@@ -50,6 +57,14 @@ class HorarioController extends Controller {
      */
     public function store(Request $request, $idCurso,$idSala)
     {
+        try {
+            if(!$email = \JWTAuth::parseToken()->toUser()){
+                return response()->json(['user not found', 404]);
+            }
+        } catch (Exception $e){
+            return Response::json(['error'=> $e->getMessage(), HttpResponse::HTTP_UNAUTHORIZED]);
+        }
+
         //ver campos
         if(!$request->get('dia'))
         {
@@ -110,6 +125,15 @@ class HorarioController extends Controller {
      */
     public function update(Request $request,$idCurso,$idHorario,$idSala)
     {
+        try {
+            if(!$email = \JWTAuth::parseToken()->toUser()){
+                return response()->json(['user not found', 404]);
+            }
+        } catch (Exception $e){
+            return Response::json(['error'=> $e->getMessage(), HttpResponse::HTTP_UNAUTHORIZED]);
+        }
+
+
         $metodo = $request->method();
 
         $horario = Schedule::find($idHorario);
@@ -232,6 +256,15 @@ class HorarioController extends Controller {
      */
     public function destroy($idCurso, $idHorario,$idSala)
     {
+        try {
+            if(!$email = \JWTAuth::parseToken()->toUser()){
+                return response()->json(['user not found', 404]);
+            }
+        } catch (Exception $e){
+            return Response::json(['error'=> $e->getMessage(), HttpResponse::HTTP_UNAUTHORIZED]);
+        }
+
+
         $cursos = Course::find($idCurso);
         if(!$cursos){
             return response()->json(['Mensaje'=>'No se encontro registro curso','codigo'=> 404],404);

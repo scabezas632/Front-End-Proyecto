@@ -10,7 +10,7 @@ class HorariosController extends Controller {
 
     public function __construct()
     {
-        $this->middleware('auth.basic');
+        $this->middleware('cors');
     }
 	/**
 	 * Display a listing of the resource.
@@ -19,6 +19,14 @@ class HorariosController extends Controller {
 	 */
 	public function index()
 	{
+        try {
+            if(!$email = \JWTAuth::parseToken()->toUser()){
+                return response()->json(['user not found', 404]);
+            }
+        } catch (Exception $e){
+            return Response::json(['error'=> $e->getMessage(), HttpResponse::HTTP_UNAUTHORIZED]);
+        }
+
         $horarios = Schedule::all();
         if(!$horarios){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);

@@ -1,29 +1,34 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
-use App\User;
-use Faker\Factory as Faker;
 
-class UserTableSeeder extends Seeder {
-
+class UserTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run()
     {
+        $users = [
+          [
+            'name' => 'Administrador',
+            'email' => 'api@utem.cl',
+            'password' => Hash::make('secret')
+          ]
+        ];
+
+        foreach($users as $user){
+          \App\User::create($user);
+        }
+        /*\DB::table('users')->truncate();
 
         $faker = Faker::create();
-            $id = \DB::table('users')->insertGetId(array(
-
-                'nombre'        => 'admin',
-
-                'apellido'      => $faker->lastName,
-
-                'email'         => 'api@utem.cl',
-
-                'password'      => \Hash::make('secret')
-
-
-
-            ));
+        User::create(['nombre'=>"admin",
+                      'apellido'=>$faker->lastName,
+                      'email'=>"api@utem.cl",
+                      'password'=>\Hash::make('secret')]);
+                      */
     }
-
 }

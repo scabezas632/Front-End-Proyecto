@@ -10,15 +10,25 @@ class DispoController extends Controller {
 
     public function __construct()
     {
-        $this->middleware('auth.basic');
+        $this->middleware('cors');
     }
-	/**
+
+    /**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
 	public function index()
 	{
+        try {
+            if(!$email = \JWTAuth::parseToken()->toUser()){
+                return response()->json(['user not found', 404]);
+            }
+        } catch (Exception $e){
+            return Response::json(['error'=> $e->getMessage(), HttpResponse::HTTP_UNAUTHORIZED]);
+        }
+
+
         $horarios = Disponibility::all();
         if(!$horarios){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
@@ -54,6 +64,15 @@ class DispoController extends Controller {
 	 */
 	public function show($id)
 	{
+        try {
+            if(!$email = \JWTAuth::parseToken()->toUser()){
+                return response()->json(['user not found', 404]);
+            }
+        } catch (Exception $e){
+            return Response::json(['error'=> $e->getMessage(), HttpResponse::HTTP_UNAUTHORIZED]);
+        }
+
+
         $horario = Disponibility::find($id);
         if(!$horario){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);

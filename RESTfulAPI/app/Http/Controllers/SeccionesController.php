@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class SeccionesController extends Controller {
     public function __construct()
     {
-        $this->middleware('auth.basic');
+        $this->middleware('cors');
     }
 	/**
 	 * Display a listing of the resource.
@@ -19,6 +19,14 @@ class SeccionesController extends Controller {
 	 */
 	public function index()
 	{
+        try {
+            if(!$email = \JWTAuth::parseToken()->toUser()){
+                return response()->json(['user not found', 404]);
+            }
+        } catch (Exception $e){
+            return Response::json(['error'=> $e->getMessage(), HttpResponse::HTTP_UNAUTHORIZED]);
+        }
+
 	    $secciones = Section::all();
         if(!$secciones){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
@@ -54,11 +62,7 @@ class SeccionesController extends Controller {
 	 */
 	public function show($id)
 	{
-        $departamento = Departament::find($id);
-        if(!$departamento){
-            return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
-        }
-        return response()->json(['datos'=>$departamento],202);
+        //
 	}
 
 	/**

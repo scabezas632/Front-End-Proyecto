@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class SalaController extends Controller {
     public function __construct()
     {
-        $this->middleware('auth.basic');
+        $this->middleware('cors');
     }
 	/**
 	 * Display a listing of the resource.
@@ -18,6 +18,15 @@ class SalaController extends Controller {
 	 */
 	public function index()
 	{
+        try {
+            if(!$email = \JWTAuth::parseToken()->toUser()){
+                return response()->json(['user not found', 404]);
+            }
+        } catch (Exception $e){
+            return Response::json(['error'=> $e->getMessage(), HttpResponse::HTTP_UNAUTHORIZED]);
+        }
+
+
         return response()->json(['datos'=>Classroom::all()],202);
 	}
 
@@ -49,6 +58,15 @@ class SalaController extends Controller {
 	 */
 	public function show($id)
 	{
+        try {
+            if(!$email = \JWTAuth::parseToken()->toUser()){
+                return response()->json(['user not found', 404]);
+            }
+        } catch (Exception $e){
+            return Response::json(['error'=> $e->getMessage(), HttpResponse::HTTP_UNAUTHORIZED]);
+        }
+
+
         $salas = Classroom::find($id);
         if(!$salas){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);

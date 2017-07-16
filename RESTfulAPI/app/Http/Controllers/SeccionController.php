@@ -11,17 +11,25 @@ use Illuminate\Http\Request;
 class SeccionController extends Controller {
     public function __construct()
     {
-        $this->middleware('auth.basic');
+        $this->middleware('cors');
     }
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function index($id)
+	public function index($idProfesor)
 	{
+        try {
+            if(!$email = \JWTAuth::parseToken()->toUser()){
+                return response()->json(['user not found', 404]);
+            }
+        } catch (Exception $e){
+            return Response::json(['error'=> $e->getMessage(), HttpResponse::HTTP_UNAUTHORIZED]);
+        }
 
-        $profesores = Teacher::find($id);
+
+        $profesores = Teacher::find($idProfesor);
         if(!$profesores){
             return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
         }
@@ -81,46 +89,7 @@ class SeccionController extends Controller {
 	 */
 	public function update(Request $request,$idProfesores,$idDispo,$idCurso)
 	{
-        $metodo = $request->method();
 
-        $profesores = Teacher::find($idProfesores);
-        if(!$profesores){
-            return response()->json(['mensaje'=>'No se encontro registro'],404);
-        }
-        $dispo = Disponibility::find($idDispo);
-        if(!$dispo){
-            return response()->json(['mensaje'=>'No se encontro registro'],404);
-        }
-        $curso = $profesores->course()->find($idCurso);
-        if(!$curso){
-            return response()->json(['mensaje'=>'No se encontro registro'],404);
-        }
-
-        $dia = $request->get('dia');
-        $bloque = $request->get('bloque');
-
-        if ($metodo==="PATCH"){
-            if ($dia!=null && $dia!=""){
-                $dispo->dia=$dia;
-            }
-            if (!$bloque=null && $bloque!=""){
-                $dispo->bloque=$bloque;
-            }
-            $dispo->save();
-            return response()->json(['mensaje'=>'Disponibilidad ha sido editado'],202);
-        }
-
-        //PUT
-        if(!$dia){
-            return response()->json(['mensaje'=>'datos invalidos '],404);
-        }
-        if(!$bloque){
-            return response()->json(['mensaje'=>'datos invalidos '],404);
-        }
-        $dispo->dia=$dia;
-        $dispo->bloque=$bloque;
-        $dispo->save();
-        return response()->json(['mensaje'=>'Disponibilidad ha sido editado'],202);
 	}
 
 	/**
@@ -131,24 +100,7 @@ class SeccionController extends Controller {
 	 */
 	public function destroy($idProfesor,$idDispo,$idcurso)
 	{
-        $profesores = Teacher::find($idProfesor);
-        if(!$profesores){
-            return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
-        }
 
-        $idDispo = Schedule::find($idDispo);
-        if(!$idDispo){
-            return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
-        }
-
-        //dd($idCurso,$idHorario,$idSala);
-        $cursos = $profesores->course()->find($idcurso);
-        if(!$cursos){
-            return response()->json(['Mensaje'=>'No se encontro registro','codigo'=> 404],404);
-        }
-
-        $profesores->delete();
-        return response()->json(['mensaje'=>'Horario ha sido eliminado'],202);
 	}
 
 }
