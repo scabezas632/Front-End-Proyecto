@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+import { AuthHttp, tokenNotExpired } from 'angular2-jwt';
 import { Profesor } from '../interfaces/profesor.interface';
 import 'rxjs/Rx'
 
@@ -7,8 +8,8 @@ import 'rxjs/Rx'
 @Injectable()
 export class ProfesoresService {
 
-  profesoresUrl:string = "http://localhost:8000/profesores";
-  profesorUrl:string = "http://localhost:8000/profesores"
+  profesoresUrl:string = "http://localhost:8000/api/profesores";
+  profesorUrl:string = "http://localhost:8000/api/profesores";
 
   constructor( private http:Http ) { }
 
@@ -18,6 +19,8 @@ export class ProfesoresService {
     let headers = new Headers({
       'Content-Type':'application/json'
     });
+
+    let token = localStorage.getItem('token');
 
     return this.http.post( this.profesoresUrl, body, { headers } )
         .map( res=>{
@@ -33,7 +36,9 @@ export class ProfesoresService {
       'Content-Type':'application/json'
     });
 
-    let url = `${ this.profesorUrl }/${ key$ }`;
+    let token = localStorage.getItem('token');
+
+    let url = `${ this.profesorUrl }/${ key$ }?token=${ token }`;
 
     return this.http.put( url, body, { headers } )
         .map( res=>{
@@ -43,24 +48,27 @@ export class ProfesoresService {
   }
 
   getProfesor( key$:string ){
-    let url = `${ this.profesorUrl }/${ key$ }`;
+    let token = localStorage.getItem('token');
+
+    let url = `${ this.profesorUrl }/${ key$ }?token=${ token }`;
     return this.http.get( url )
         .map( res=>res.json().datos );
   }
 
   getProfesores(){
-
     let headers = new Headers();
-    headers.append( 'Authorization', 'Basic YXBpQHV0ZW0uY2w6c2VjcmVldA==' );
+    let token = localStorage.getItem('token');
 
-    return this.http.get( this.profesoresUrl )
+    let url = `${ this.profesoresUrl }?token=${ token }`;
+
+    return this.http.get( url )
         .map( res=>{
-          // console.log(res.json().datos);
           return res.json().datos;
         })
   }
 
   borrarProfesor( key$:string ){
+    let token = localStorage.getItem('token');
 
     let url = `${ this.profesorUrl }/${ key$ }`;
     return this.http.delete( url )

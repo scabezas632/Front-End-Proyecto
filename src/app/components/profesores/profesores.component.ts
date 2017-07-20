@@ -20,20 +20,6 @@ export class ProfesoresComponent implements OnInit {
           })
   }
 
-
   ngOnInit() {
   }
-
-  borrarProfesor( key$:string ){
-    this._profesoresServices.borrarProfesor( key$ )
-        .subscribe( respuesta=>{
-          if( respuesta ){
-            console.error(respuesta);
-          }else{
-            //todo bien
-            delete this.profesores[key$];
-          }
-        } )
-  }
-
 }

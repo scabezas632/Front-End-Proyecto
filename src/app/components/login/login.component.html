@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="card width col-centered" *ngIf="!auth.loggedIn()">
+      <h3 class="card-header card-primary color">Login - HorarioApp</h3>
+      <div class="card-block">
+        <!-- <form (submit)="onLogin($event)"> -->
+        <form (submit)="onLogin($event)" [formGroup]="forma" novalidate="novalidate">
+            <div class="form-group row" [ngClass]="{ 'has-danger': (!forma.get('email').valid) && forma.get('email').touched }">
+                <label class="col-2 col-form-label" for="email">Email</label>
+                <input type="email"
+                        class="form-control"
+                        name="email"
+                        formControlName="email">
+
+                <div *ngIf="forma.controls['email'].errors?.required && forma.get('email').touched "
+                      class="form-control-feedback">
+                  El email es obligatorio.
+                </div>
+
+                <div *ngIf="forma.controls['email'].errors?.pattern && forma.get('email').touched "
+                      class="form-control-feedback">
+                  El email no tiene formato valido.
+                </div>
+
+            </div>
+
+            <div class="form-group row" [ngClass]="{ 'has-danger': (!forma.get('password').valid) && forma.get('password').touched }">
+                <label class="col-2 col-form-label" for="password">Password</label>
+                <input type="password"
+                        class="form-control"
+                        name="password"
+                        formControlName="password">
+
+                <div *ngIf="forma.controls['password'].errors?.required && forma.get('password').touched "
+                      class="form-control-feedback">
+                  La constraseña es obligatoria.
+                </div>
+
+            </div>
+
+            <div class="form-group">
+              <!-- [disabled]="!forma.valid" -->
+                <button
+                        type="submit"
+                        class="btn btn-primary">
+                  Ingresar
+                </button>
+            </div>
+
+            <!-- ALERTAS -->
+            <div class="alert alert-danger alert-dismissible fade show animated fadeIn fast"
+                  role="alert"
+                  *ngIf="userError">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cambiarVariableAlerta()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <strong>¡ERROR!</strong> El email o contraseña ingresados son incorrectos.
+            </div>
+
+        </form>
+      </div>
+    </div>
+    <div *ngIf="auth.loggedIn()"
+          class="card width col-centered">
+      <h3 class="card-header card-primary color">¡Bienvenido!</h3>
+      <!-- <div class="card-block">
+      </div> -->
+    </div>
+  </body>
+</html>

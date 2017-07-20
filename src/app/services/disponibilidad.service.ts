@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { Disponibilidad } from '../interfaces/disponibilidad.interface';
 import 'rxjs/Rx'
 
@@ -7,25 +7,22 @@ import 'rxjs/Rx'
 @Injectable()
 export class DisponibilidadService {
 
-  disponibilidadUrl:string = "http://localhost:8000/profesor"
+  disponibilidadUrl:string = "http://localhost:8000/api/profesor"
 
   constructor( private http:Http ) { }
 
-
   nuevaDisponibilidad( disponibilidad:any[], idProfesor$:string ){
 
-    let url = `${ this.disponibilidadUrl }/${ idProfesor$ }/disponibilidad`;
-
-    let body = JSON.stringify( disponibilidad );
     let headers = new Headers({
       'Content-Type':'application/json'
     });
-    console.log(body);
 
+    let token = localStorage.getItem('token');
 
-    return this.http.post( url, body, { headers } )
+    let url = `${ this.disponibilidadUrl }/${ idProfesor$ }/disponibilidad?token=${ token }`;
+
+    return this.http.post( url, disponibilidad, headers )
         .map( res=>{
-          // console.log(res.json().datos);
            res.json().datos;
         })
   }
@@ -37,7 +34,9 @@ export class DisponibilidadService {
       'Content-Type':'application/json'
     });
 
-    let url = `${ this.disponibilidadUrl }/${ idProfesor$ }/disponibilidad/${ idDisponibilidad$ }`;
+    let token = localStorage.getItem('token');
+
+    let url = `${ this.disponibilidadUrl }/${ idProfesor$ }/disponibilidad/${ idDisponibilidad$ }?token=${ token }`;
 
     return this.http.put( url, body, { headers } )
         .map( res=>{
@@ -46,11 +45,13 @@ export class DisponibilidadService {
   }
 
   getDisponibilidades( idProfesor$:string ){
-    let url = `${ this.disponibilidadUrl }/${ idProfesor$ }/disponibilidad`;
+    let token = localStorage.getItem('token');
+    console.log(token);
+
+    let url = `${ this.disponibilidadUrl }/${ idProfesor$ }/disponibilidad?token=${ token }`;
 
     return this.http.get( url )
         .map( res=>{
-          // console.log(res.json().datos);
           return res.json().datos;
         })
   }

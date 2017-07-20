@@ -69,13 +69,14 @@ export class ProfesorComponent{
                 							   [1, 1, 1, 1, 1, 3]];
 
 
-  formas:FormGroup;
-
   //Para que la disponibilidad se carge una sola vez
   interruptor:boolean = false;
 
   //Para que siempre carge primero la disponibilidad
   enabled:boolean = false;
+
+  //Alerta enabled disponibiilidad
+  errorMostrarDisponibilidad:boolean = false;
 
   //Para saber si se efectúo correctamente la actualización
   actualizado:boolean = false;
@@ -90,14 +91,6 @@ export class ProfesorComponent{
                 private _disponibilidadService:DisponibilidadService,
                 private router:Router,
                 private activatedRoute:ActivatedRoute){
-
-    this.formas = new FormGroup({
-      'nombre': new FormControl('', [
-                                      Validators.required,
-                                      Validators.minLength(3)
-                                    ] ),
-      'periodo_1': new FormControl()
-    })
 
     this.activatedRoute.params
         .subscribe( parametros=>{
@@ -135,6 +128,10 @@ export class ProfesorComponent{
   }
 
   changeEstadoBloque(coordenada){
+
+    if(!this.enabled){
+      this.errorMostrarDisponibilidad = true;
+    }
     if(this.enabled){
       let dato = coordenada.split("-");
       let fila = +dato[0];
@@ -219,7 +216,7 @@ export class ProfesorComponent{
           }
         }
 
-        this._disponibilidadService.nuevaDisponibilidad( this.arregloDisponibilidad[idArreglo], this.id )
+        this._disponibilidadService.nuevaDisponibilidad( this.arregloDisponibilidad[idArreglo],this.id )
               .subscribe( data=>{
                 this.actualizado = true;
               },
@@ -272,6 +269,7 @@ export class ProfesorComponent{
   mostrarDisponibilidad(){
     if(this.interruptor==false){
       this.enabled=true;
+      this.errorMostrarDisponibilidad = false;
 
       //CONVERTIR DE JSON A ARRAY
       for(let i in this.disponibilidad){
@@ -315,6 +313,7 @@ export class ProfesorComponent{
   cambiarVariableAlerta(){
     this.actualizado = false;
     this.errorActualizado = false;
+    this.errorMostrarDisponibilidad = false;
   }
 
 

@@ -10,24 +10,24 @@
     <div class="row animated fadeIn fast">
       <div class="col-md-12">
 
-        <div class="table-responsive">
-
-          <table class="table">
+        <div class="table-responsive card-info-margin">
+          <table class="table results">
             <thead class="thead-inverse">
               <tr>
                 <th class="w-5 text-center">#</th>
-                <th class="text-center">Nombre de Sala</th>
+                <th class="text-center">Nombre</th>
                 <th class="text-center">Opciones</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let k of salas | keys; let i = index">
-                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-center">{{ i+1 }}</td>
                 <td class="text-center">{{ salas[k].nombre }}</td>
                 <td class="text-center">
-                  <button [routerLink]="['/sala', salas[k].id]"
-                          type="button" class="btn btn-outline-primary">
-                    Ver Horario
+
+                  <button [routerLink]="['/salas', salas[k].id]"
+                          type="button" class="btn btn-success">
+                    Descargar Horario
                   </button>
                 </td>
               </tr>
@@ -36,7 +36,7 @@
 
           <div *ngIf="( salas | keys ).length === 0 && !loading"
                 class="alert alert-info" role="alert">
-            <strong>No hay</strong> registros que mostrar
+            <strong>No hay</strong> salas registradas
           </div>
 
           <div *ngIf="loading"

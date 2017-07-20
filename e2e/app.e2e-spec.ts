@@ -1,10 +1,10 @@
-import { Proyecto2Page } from './app.po';
+import { FrontPage } from './app.po';
 
-describe('proyecto2 App', () => {
-  let page: Proyecto2Page;
+describe('front App', () => {
+  let page: FrontPage;
 
   beforeEach(() => {
-    page = new Proyecto2Page();
+    page = new FrontPage();
   });
 
   it('should display welcome message', () => {

@@ -2,29 +2,41 @@
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand"  [routerLink]="['salas']">HorariosApp</a>
+  <a class="navbar-brand"  [routerLink]="['profesores']">HorariosApp</a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['salas']">Ver Horario Salas</a>
+      <li class="nav-item"
+          routerLinkActive="active"
+          *ngIf="_authService.loggedIn()">
+        <a class="nav-link" [routerLink]="['./profesores']">Disponibilidad Profesores</a>
       </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['profesores']">Disponibilidad Profesores</a>
+      <li class="nav-item"
+          routerLinkActive="active"
+          *ngIf="_authService.loggedIn()">
+        <a class="nav-link" [routerLink]="['./salas']">Salas</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
+
+      <button class="btn btn-outline-info my-2 my-sm-0 btn-margin-nav"
+              type="button"
+              (click)="ConfirmaCargar()"
+              *ngIf="_authService.loggedIn()">
+        Cargar Base de Datos
+      </button>
+
       <button class="btn btn-outline-success my-2 my-sm-0 btn-margin-nav"
               type="button"
-              (click)="ConfirmaGenerar()">
+              (click)="ConfirmaGenerar()"
+              *ngIf="_authService.loggedIn()">
         Generar Horario
       </button>
-      <button class="btn btn-outline-success my-2 my-sm-0 btn-margin-nav"
-              type="button">
-        Ingresar
-      </button>
+
       <button class="btn btn-outline-danger my-2 my-sm-0 btn-margin-nav"
-              type="button">
+              type="button"
+              (click)="_authService.logout()"
+              *ngIf="_authService.loggedIn()">
         Logout
       </button>
     </form>
