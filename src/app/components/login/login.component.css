@@ -1,0 +1,13 @@
+.width{
+  width:50%
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+.color{
+  color: white
+}

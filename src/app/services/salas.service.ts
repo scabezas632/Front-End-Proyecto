@@ -1,65 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+import { AuthHttp, tokenNotExpired } from 'angular2-jwt';
 import { Sala } from '../interfaces/sala.interface';
 import 'rxjs/Rx'
+
 
 @Injectable()
 export class SalasService {
 
+  salaUrl:string = "http://localhost:8000/api/salas";
+  horarioUrl:string = "http://localhost:8000/api/sala";
+
   constructor( private http:Http ) { }
 
-  salasUrl:string = "https://paralela-2fcd6.firebaseio.com/Salas.json";
-  salaUrl:string = "https://paralela-2fcd6.firebaseio.com/Salas/";
+  getHorarioSala( idSala$:string ){
+    let token = localStorage.getItem('token');
 
-  nuevaSala( sala:Sala ){
-
-    let body = JSON.stringify( sala );
-    let headers = new Headers({
-      'Content-Type':'application/json'
-    });
-
-    return this.http.post( this.salasUrl, body, { headers } )
-        .map( res=>{
-          console.log(res.json());
-          return res.json();
-        })
-  }
-
-  actualizarSala( sala:Sala, key$:string ){
-
-    let body = JSON.stringify( sala );
-    let headers = new Headers({
-      'Content-Type':'application/json'
-    });
-
-    let url = `${ this.salaUrl }/${ key$ }.json`;
-
-    return this.http.put( url, body, { headers } )
-        .map( res=>{
-          console.log(res.json());
-          return res.json();
-        })
-  }
-
-  getSala( key$:string ){
-    let url = `${ this.salaUrl }/${ key$ }.json`;
+    let url = `${ this.horarioUrl }/${ idSala$ }/horario?token=${ token }`;
     return this.http.get( url )
-        .map( res=>res.json() );
+        .map( res=>res.json().datos );
   }
 
   getSalas(){
+    let headers = new Headers();
+    let token = localStorage.getItem('token');
 
-    return this.http.get( this.salasUrl )
-        .map( res=>res.json() );
+    console.log(token);
+
+    let url = `${ this.salaUrl }?token=${ token }`;
+
+    return this.http.get( url )
+        .map( res=>{
+          return res.json().datos;
+        })
   }
-
-  borrarSala( key$:string ){
-
-    let url = `${ this.salaUrl }/${ key$ }.json`;
-    return this.http.delete( url )
-          .map( res=> res.json() )
-
-  }
-
 
 }

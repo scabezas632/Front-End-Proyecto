@@ -3,8 +3,9 @@ import { NgForm } from '@angular/forms';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Profesor } from '../../interfaces/profesor.interface';
+import { Disponibilidad } from '../../interfaces/disponibilidad.interface';
 import { ProfesoresService } from '../../services/profesores.service';
-import { DepartamentosService } from '../../services/departamentos.service';
+import { DisponibilidadService } from '../../services/disponibilidad.service';
 
 
 
@@ -21,49 +22,75 @@ import { DepartamentosService } from '../../services/departamentos.service';
 export class ProfesorComponent{
 
   public profesor:Profesor = {
-    id:null,
-    name:"",
+    nombre:"",
     apellido:"",
-    rut:null,
+    rut:""
   }
 
+  public disponibilidad:Disponibilidad = {
+    dia:null,
+    periodo_1: 0,
+    periodo_2: 0,
+    periodo_3: 0,
+    periodo_4: 0,
+    periodo_5: 0,
+    periodo_6: 0,
+    periodo_7: 0,
+    periodo_8: 0,
+    teacher_id:0
+  }
+
+  //Dias en total
   public dias:any[]=[0,1,2,3,4,5];
-  public periodos:any[]=[0,1,2,3,4,5,6,7,8];
-  public matrizHorario: any[] = [[false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false],
-                							   [false, false, false, false, false, false]];
 
-  public departamentos:any[] = [];
+  //Dias que no tienen horario ocupado
+  public diasDisponibles:any[]=[0,1,2,3,4,5];
 
-  formas:FormGroup;
-  nuevo:boolean = false;
+  //Dias que están en la base de datos
+  public diasUpdate:any[]=[]
+
+  //Dias que no están en la base de datos
+  public diasCreate:any[]=[0,1,2,3,4,5];
+
+  //Periodos a usar
+  public periodos:any[]=[0,1,2,3,4,5,6,7];
+
+  // ESTADOS DE LA MATRIZ
+  // 1 = Disponible para ser usado
+  // 2 = No disponible para ser usado
+  // 3 = Deshabilitado
+  public matrizHorario: any[] = [[1, 1, 1, 1, 1, 1],
+                							   [1, 1, 1, 1, 1, 1],
+                							   [1, 1, 1, 1, 1, 1],
+                							   [1, 1, 1, 1, 1, 1],
+                							   [1, 1, 1, 1, 1, 3],
+                							   [1, 1, 1, 1, 1, 3],
+                							   [1, 1, 1, 1, 1, 3],
+                							   [1, 1, 1, 1, 1, 3]];
+
+
+  //Para que la disponibilidad se carge una sola vez
+  interruptor:boolean = false;
+
+  //Para que siempre carge primero la disponibilidad
+  enabled:boolean = false;
+
+  //Alerta enabled disponibiilidad
+  errorMostrarDisponibilidad:boolean = false;
+
+  //Para saber si se efectúo correctamente la actualización
+  actualizado:boolean = false;
+  errorActualizado:boolean = false;
+
+  //ID del profesor
   id:string = "";
 
+  public arregloDisponibilidad:any[] = [];
+
   constructor( private _profesoresService:ProfesoresService,
-                private _departamentosService:DepartamentosService,
+                private _disponibilidadService:DisponibilidadService,
                 private router:Router,
                 private activatedRoute:ActivatedRoute){
-
-    this.formas = new FormGroup({
-      'nombre': new FormControl('', [
-                                      Validators.required,
-                                      Validators.minLength(3)
-                                    ] ),
-      'apellido': new FormControl('', [
-                                      Validators.required,
-                                      Validators.minLength(3)
-                                    ] ),
-      'rut': new FormControl('', [
-                                    Validators.required
-                                  ] ),
-    })
-
 
     this.activatedRoute.params
         .subscribe( parametros=>{
@@ -72,11 +99,23 @@ export class ProfesorComponent{
             //OBTIENE LOS DATOS DEL PROFESOR
             this._profesoresService.getProfesor( this.id )
                   .subscribe( profesor => this.profesor = profesor)
+                  // console.log(this.profesor);
           }
 
         } );
-  }
 
+    this.activatedRoute.params
+        .subscribe( parametros=>{
+          this.id = parametros['id']
+          if(this.id !=="nuevo" ){
+            //OBTIENE LAS DISPONIBILIDADES DEL PROFESOR
+            this._disponibilidadService.getDisponibilidades( this.id )
+                  .subscribe( disponibilidad => this.disponibilidad = disponibilidad)
+          }
+
+        } );
+
+  }
 
   //Funciones de horario
   getEstadoBloque(coordenada){
@@ -85,74 +124,196 @@ export class ProfesorComponent{
     let columna = +dato[1];
 
     // console.log("bloques["+columna+"]["+fila+"]: "+this.matrizHorario[columna][fila]);
-
     return this.matrizHorario[columna][fila];
   }
 
   changeEstadoBloque(coordenada){
-    let dato = coordenada.split("-");
-    let fila = +dato[0];
-    let columna = +dato[1];
 
-    if(fila==5 && columna>=4){
-      this.matrizHorario[columna][fila]=this.matrizHorario[columna][fila];
-    }else{
-      this.matrizHorario[columna][fila]=!this.matrizHorario[columna][fila];
+    if(!this.enabled){
+      this.errorMostrarDisponibilidad = true;
     }
-  }
+    if(this.enabled){
+      let dato = coordenada.split("-");
+      let fila = +dato[0];
+      let columna = +dato[1];
+
+      if(fila==5 && columna>=4){
+        this.matrizHorario[columna][fila]=this.matrizHorario[columna][fila];
+      }else{
+        //CON NUMEROS
+        if(this.matrizHorario[columna][fila]==1){
+          this.matrizHorario[columna][fila]=2;
+        }
+        else{
+          this.matrizHorario[columna][fila]=1;
+        }
+        //CON BOOLEANOS
+        // this.matrizHorario[columna][fila]=!this.matrizHorario[columna][fila];
+      }
+
+      //SI SE CAMBIO UN DIA DISPONIBLE, LO BORRA
+      let index = this.diasDisponibles.indexOf(fila);
+      let contador = 0;
+      for(let i in this.periodos){
+          contador+=this.matrizHorario[i][fila];
+      }
+
+      if(index==-1){
+        //0 de lunes a Viernes y 12 el Sábado
+        if(contador==0 || contador==12){
+          this.diasDisponibles.push(fila);
+          contador=0;
+        }
+      }else{
+        this.diasDisponibles.splice(index,1);
+        contador=0;
+      }
+    }
+}
 
   completarDia(dia, llenar){
-
-    for(let i=0;i<=8;i++){
+    for(let i in this.periodos){
       if(llenar==true){
-        if(this.getEstadoBloque( dia+"-"+i )==false){
+        if(this.getEstadoBloque( dia+"-"+i )==1){
           this.changeEstadoBloque( dia+"-"+i );
         }
       }else{
-        if(this.getEstadoBloque( dia+"-"+i )==true){
+        if(this.getEstadoBloque( dia+"-"+i )==2){
           this.changeEstadoBloque( dia+"-"+i );
         }
       }
     }
   }
 
+  guardar(key:any){
+    this.cambiarVariableAlerta()
 
-  guardar( forma:any ){
-    console.log(forma);
-    if(this.id == "nuevo"){
-      //insertando
-      this._profesoresService.nuevoProfesor( this.profesor )
-            .subscribe( data=>{
-              this.router.navigate(['/profesor',data.name])
-            },
-          error=> console.error(error));
-    }else{
-      //actualizando
-      this._profesoresService.actualizarProfesor( this.profesor, this.id )
-            .subscribe( data=>{
-            },
-          error=> console.error(error));
+    //Si hay dias nuevos, añadirlos
+    if(this.diasCreate.length>0){
+      //AÑADE AL ARREGLO LOS DIAS QUE FALTAN
+      for(let i in this.diasCreate){
+        this.arregloDisponibilidad.push(
+          {
+            "dia":this.diasCreate[i]+1,
+            "periodo_1":this.matrizHorario[0][this.diasCreate[i]],
+            "periodo_2":this.matrizHorario[1][this.diasCreate[i]],
+            "periodo_3":this.matrizHorario[2][this.diasCreate[i]],
+            "periodo_4":this.matrizHorario[3][this.diasCreate[i]],
+            "periodo_5":this.matrizHorario[4][this.diasCreate[i]],
+            "periodo_6":this.matrizHorario[5][this.diasCreate[i]],
+            "periodo_7":this.matrizHorario[6][this.diasCreate[i]],
+            "periodo_8":this.matrizHorario[7][this.diasCreate[i]],
+            "teacher_id":key}
+        );
+      }
+
+      //VERIFICA CUALES NO ESTÁN EN LA BASE DE DATOS
+      let idArreglo;
+      for(let i in this.arregloDisponibilidad){
+        for(let j in this.diasCreate){
+          if(this.arregloDisponibilidad[i].dia==this.diasCreate[j]+1){
+            idArreglo=i;
+          }
+        }
+
+        this._disponibilidadService.nuevaDisponibilidad( this.arregloDisponibilidad[idArreglo],this.id )
+              .subscribe( data=>{
+                this.actualizado = true;
+              },
+            error=> {
+              console.error(error)
+              this.errorActualizado = true;
+            });
+      }
+    }
+    //SI HABIAN DE ANTES, ACTUALIZARLOS
+    if(this.diasUpdate.length>0){
+      //ENCONTRAR INDEX DE LOS QUE HABIAN
+      let idArreglo;
+      for(let i in this.arregloDisponibilidad){
+        for(let j in this.diasUpdate){
+          if(this.arregloDisponibilidad[i].dia==this.diasUpdate[j]+1){
+            idArreglo=i;
+
+          }
+        }
+
+        //PARTE QUE NO FUNCIONA
+        // console.log("DIA: "+this.arregloDisponibilidad[idArreglo].dia);
+
+        this.arregloDisponibilidad[idArreglo].periodo_1 = this.matrizHorario[0][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_2 = this.matrizHorario[1][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_3 = this.matrizHorario[2][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_4 = this.matrizHorario[3][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_5 = this.matrizHorario[4][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_6 = this.matrizHorario[5][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_7 = this.matrizHorario[6][this.diasUpdate[idArreglo]];
+        this.arregloDisponibilidad[idArreglo].periodo_8 = this.matrizHorario[7][this.diasUpdate[idArreglo]];
+
+        let idDisponibilidad = this.arregloDisponibilidad[idArreglo].id;
+
+        this._disponibilidadService.actualizarDisponibilidad( this.arregloDisponibilidad[idArreglo], this.id,  idDisponibilidad )
+              .subscribe( data=>{
+                // console.log(idDisponibilidad+" ACTUALIZADO");
+                this.actualizado = true;
+              },
+            error=> {
+              console.error(error)
+              this.errorActualizado = true;
+            });
+
+      }
     }
   }
 
-  // passwordIguales( control: FormControl ): any {
-  //   let formas:any = this;
-  //   if( control.value === formas.controls['password1'].value ){
-  //     console.log("iguales")
-  //     return{
-  //       passwordiguales:true
-  //     }
-  //   }else{
-  //     console.log("NO iguales")
-  //     return null;
-  //   }
-  // }
+  mostrarDisponibilidad(){
+    if(this.interruptor==false){
+      this.enabled=true;
+      this.errorMostrarDisponibilidad = false;
 
-  agregarNuevo( forma:NgForm ){
-    this.router.navigate(['/profesor','nuevo']);
+      //CONVERTIR DE JSON A ARRAY
+      for(let i in this.disponibilidad){
+         this.arregloDisponibilidad.push(this.disponibilidad[i])
+      }
 
-    forma.reset();
+      //MODIFICAR LA matrizHorario CON LOS DATOS DE DISPONIBILIDAD
+      let dia;
+      for(let i in this.arregloDisponibilidad){
+        //INICIA LA VARIABLE "dia" SEGÚN EL VALOR DEL AREGLO
+        if(this.arregloDisponibilidad[i].dia==1)dia=0;
+        if(this.arregloDisponibilidad[i].dia==2)dia=1;
+        if(this.arregloDisponibilidad[i].dia==3)dia=2;
+        if(this.arregloDisponibilidad[i].dia==4)dia=3;
+        if(this.arregloDisponibilidad[i].dia==5)dia=4;
+        if(this.arregloDisponibilidad[i].dia==6)dia=5;
 
+        //BORRA LOS DIAS QUE YA ESTÁN USADOS
+        let index = this.diasDisponibles.indexOf(dia);
+        this.diasDisponibles.splice(index,1);
+        this.diasCreate.splice(index,1);
+
+        //AÑADE LOS DIAS QUE ESTÁN USADOS
+        this.diasUpdate.push(dia);
+
+        //SEGÚN EL DIA, SE ASIGNAN LOS PERIODOS DEL ARREGLO
+        this.matrizHorario[0][dia]=this.arregloDisponibilidad[i].periodo_1;
+        this.matrizHorario[1][dia]=this.arregloDisponibilidad[i].periodo_2;
+        this.matrizHorario[2][dia]=this.arregloDisponibilidad[i].periodo_3;
+        this.matrizHorario[3][dia]=this.arregloDisponibilidad[i].periodo_4;
+        this.matrizHorario[4][dia]=this.arregloDisponibilidad[i].periodo_5;
+        this.matrizHorario[5][dia]=this.arregloDisponibilidad[i].periodo_6;
+        this.matrizHorario[6][dia]=this.arregloDisponibilidad[i].periodo_7;
+        this.matrizHorario[7][dia]=this.arregloDisponibilidad[i].periodo_8;
+
+      }
+      this.interruptor=true;
+    }
+  }
+
+  cambiarVariableAlerta(){
+    this.actualizado = false;
+    this.errorActualizado = false;
+    this.errorMostrarDisponibilidad = false;
   }
 
 

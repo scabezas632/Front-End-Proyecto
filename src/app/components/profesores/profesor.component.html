@@ -8,35 +8,72 @@
     <div class="row animated fadeIn fast">
       <div class="col-md-12">
 
-        <form [formGroup]="formas" (ngSubmit)="guardar(forma)" #forma="ngForm">
+        <form (ngSubmit)="guardar(profesor.id)">
           <div>
 
             <!-- Tabla de horarios -->
             <div class="form-group">
             	<div class="card animated fadeIn card-info-margin card text-center">
-            		<h3 class="card-header">Disponibilidad del profesor {{  profesor.name + " " + profesor.apellido  }}</h3>
-
+            		<h3 class="card-header"> Disponibilidad del Profesor: <br> <small> {{  profesor.nombres + " " + profesor.apellidos  }} </small> </h3>
                 <div class="card-block">
                   <div class="form-group">
                     <!-- [disabled]="!formas.valid" -->
+
+                    <button (click)="mostrarDisponibilidad()"
+                            type="button"
+                            class="btn btn-success"
+                            *ngIf="!enabled">
+                      Mostrar Disponibilidad
+                    </button>
                     <button
                             type="submit"
-                            class="btn btn-outline-primary">
+                            class="btn btn-success"
+                            *ngIf="enabled">
                       Guardar
                     </button>
                     <button [routerLink]="'/profesores'"
-                            class="btn btn-outline-danger">
+                            type="button"
+                            class="btn btn-danger">
                       Regresar
                     </button>
                   </div>
+
+                  <!-- ALERTAS -->
+                  <div class="alert alert-success alert-dismissible fade show animated fadeIn fast"
+                        role="alert"
+                        *ngIf="actualizado">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cambiarVariableAlerta()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>¡Actualizado!</strong> La disponibilidad del profesor ha sido actualizada correctamente.
+                  </div>
+
+                  <div class="alert alert-danger alert-dismissible fade show animated fadeIn fast"
+                        role="alert"
+                        *ngIf="errorActualizado">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cambiarVariableAlerta()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>¡Error!</strong> Ha ocurrido un error al intentar actualizar la disponibilidad.
+                  </div>
+
+                  <div class="alert alert-danger alert-dismissible fade show animated fadeIn fast"
+                        role="alert"
+                        *ngIf="errorMostrarDisponibilidad">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cambiarVariableAlerta()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>¡Error!</strong> Debe mostrar la disponibilidad antes de modificar.
+                  </div>
+
             			<table class="table table-bordered table-hover responsive" table>
                     <thead class="thead-inverse">
                       <tr>
                         <th style="text-align: center">Periodo</th>
                         <th style="text-align: center">Lunes</th>
                         <th style="text-align: center">Martes</th>
-            						<th style="text-align: center">Jueves</th>
                         <th style="text-align: center">Miércoles</th>
+                        <th style="text-align: center">Jueves</th>
             						<th style="text-align: center">Viernes</th>
             						<th style="text-align: center">Sábado</th>
                       </tr>
@@ -44,12 +81,49 @@
             				<tbody>
             						<tr *ngFor="let periodo of periodos">
             							<td class="text-center">{{periodo+1}}</td>
-                          <td [attr.id]="'0-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('0-' + periodo)), 'noMarcado': !getEstadoBloque('0-' + periodo)}" (click)="changeEstadoBloque('0-' + periodo)"></td>
-                          <td [attr.id]="'1-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('1-' + periodo)), 'noMarcado': !getEstadoBloque('1-' + periodo)}" (click)="changeEstadoBloque('1-' + periodo)"></td>
-                          <td [attr.id]="'2-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('2-' + periodo)), 'noMarcado': !getEstadoBloque('2-' + periodo)}" (click)="changeEstadoBloque('2-' + periodo)"></td>
-                          <td [attr.id]="'3-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('3-' + periodo)), 'noMarcado': !getEstadoBloque('3-' + periodo)}" (click)="changeEstadoBloque('3-' + periodo)"></td>
-                          <td [attr.id]="'4-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('4-' + periodo)), 'noMarcado': !getEstadoBloque('4-' + periodo)}" (click)="changeEstadoBloque('4-' + periodo)"></td>
-                          <td [attr.id]="'5-' + periodo" [ngClass]="{'marcado': (getEstadoBloque('5-' + periodo)), 'noMarcado': !getEstadoBloque('5-' + periodo)}" (click)="changeEstadoBloque('5-' + periodo)"></td>
+
+                          <td [attr.id]="'0-' + periodo"
+                              [ngClass]="{'marcado': (getEstadoBloque('0-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('0-' + periodo)==1),
+                                          'disabled': (!enabled)}"
+                              (click)="changeEstadoBloque('0-' + periodo)">
+                          </td>
+
+                          <td [attr.id]="'1-' + periodo"
+                              [ngClass]="{'marcado': (getEstadoBloque('1-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('1-' + periodo)==1),
+                                          'disabled': (!enabled)}"
+                              (click)="changeEstadoBloque('1-' + periodo)">
+                          </td>
+
+                          <td [attr.id]="'2-' + periodo"
+                              [ngClass]="{'marcado': (getEstadoBloque('2-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('2-' + periodo)==1),
+                                          'disabled': (!enabled)}"
+                              (click)="changeEstadoBloque('2-' + periodo)">
+                          </td>
+
+                          <td [attr.id]="'3-' + periodo"
+                              [ngClass]="{'marcado': (getEstadoBloque('3-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('3-' + periodo)==1),
+                                          'disabled': (!enabled)}"
+                              (click)="changeEstadoBloque('3-' + periodo)">
+                          </td>
+
+                          <td [attr.id]="'4-' + periodo"
+                              [ngClass]="{'marcado': (getEstadoBloque('4-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('4-' + periodo)==1),
+                                          'disabled': (!enabled)}"
+                              (click)="changeEstadoBloque('4-' + periodo)">
+                          </td>
+
+                          <td [attr.id]="'5-' + periodo"
+                              [ngClass]="{'marcado': (getEstadoBloque('5-' + periodo)==2),
+                                          'noMarcado': (getEstadoBloque('5-' + periodo)==1),
+                                          'disabled': (getEstadoBloque('5-' + periodo)==3) || !enabled}"
+                              (click)="changeEstadoBloque('5-' + periodo)">
+                          </td>
+
             						<tr>
                         <tr>
                           <th class="text-center">Opciones</th>
@@ -78,10 +152,6 @@
       </div>
 
     </div>
-
-    <pre>
-      {{profesor.json}}
-    </pre>
 
   </body>
 </html>
